@@ -37,10 +37,14 @@ public class DataProcessor {
 
         for (String pair : pairs) {
             String[] keyValue = pair.split(":");
-            String key = keyValue[0].trim().replaceAll("\"", "");
-            String value = keyValue[1].trim().replaceAll("\"", "");
+            if (keyValue.length == 2) {
+                String key = keyValue[0].trim().replaceAll("\"", "");
+                String value = keyValue[1].trim().replaceAll("\"", "");
 
-            jsonData.put(key, value);
+                jsonData.put(key, value);
+            } else {
+                System.out.println("Error: Incorrect format of the pair: " + pair);
+            }
         }
 
         return jsonData;
