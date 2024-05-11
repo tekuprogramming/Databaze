@@ -2,18 +2,18 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-
 public class DataProcessor {
     public void processAndSaveData(String data) throws IOException {
-        Map<String, Object> jsonData = parseJson(data);
+        Map<String,String> jsonData = parseJson(data);
 
         if (jsonData != null) {
-            String cityName = (String) jsonData.get("name");
-            Map<String, Object> weatherData = (Map<String, Object>) jsonData.get("weather");
+            String cityName = jsonData.get("name");
+            String weatherData = jsonData.get("weather");
 
             if (weatherData != null) {
-                Double temperature = (Double) weatherData.get("temp");
-                Double humidity = (Double) weatherData.get("humidity");
+                Map<String, String> weatherMap = parseJson(weatherData);
+                String temperature = weatherMap.get("temperature");
+                String humidity = weatherMap.get("humidity");
 
                 System.out.println("City: " + cityName);
                 System.out.println("Temperature: " + temperature + " °C");
@@ -28,8 +28,8 @@ public class DataProcessor {
         }
     }
 
-    public Map<String, Object> parseJson(String json) {
-        Map<String, Object> jsonData = new HashMap<>();
+    public Map<String, String> parseJson(String json) {
+        Map<String, String> jsonData = new HashMap<>();
 
         json = json.substring(1, json.length() - 1);
 
