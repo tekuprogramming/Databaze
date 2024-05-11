@@ -9,11 +9,11 @@ public class DataProcessor {
 
         if (jsonData != null) {
             String cityName = (String) jsonData.get("name");
-            Map<String, Object> mainData = (Map<String, Object>) jsonData.get("main");
+            Map<String, Object> weatherData = (Map<String, Object>) jsonData.get("weather");
 
-            if (mainData != null) {
-                Double temperature = (Double) mainData.get("temp");
-                Double humidity = (Double) mainData.get("humidity");
+            if (weatherData != null) {
+                Double temperature = (Double) weatherData.get("temp");
+                Double humidity = (Double) weatherData.get("humidity");
 
                 System.out.println("City: " + cityName);
                 System.out.println("Temperature: " + temperature + " °C");
@@ -21,7 +21,7 @@ public class DataProcessor {
 
                 saveDataToFile(data);
             } else {
-                System.out.println("Error: 'main' was not found in JSON object.");
+                System.out.println("Error: 'weather' was not found in JSON object.");
             }
         } else {
             System.out.println("Error: JSON data was not processed correctly.");
@@ -32,12 +32,13 @@ public class DataProcessor {
         Map<String, Object> jsonData = new HashMap<>();
 
         json = json.substring(1, json.length() - 1);
+
         String[] pairs = json.split(",");
 
         for (String pair : pairs) {
             String[] keyValue = pair.split(":");
-            String key = keyValue[0].trim();
-            String value = keyValue[1].trim();
+            String key = keyValue[0].trim().replaceAll("\"", "");
+            String value = keyValue[1].trim().replaceAll("\"", "");
 
             jsonData.put(key, value);
         }
