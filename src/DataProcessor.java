@@ -7,16 +7,25 @@ public class DataProcessor {
     public void processAndSaveData(String data) throws IOException {
         Map<String, Object> jsonData = parseJson(data);
 
-        String cityName = (String) jsonData.get("name");
-        Map<String, Object> mainData = (Map<String, Object>) jsonData.get("main");
-        Double temperature = (Double) mainData.get("temp");
-        Double humidity = (Double) mainData.get("humidity");
+        if (jsonData != null) {
+            String cityName = (String) jsonData.get("name");
+            Map<String, Object> mainData = (Map<String, Object>) jsonData.get("main");
 
-        System.out.println("City: " + cityName);
-        System.out.println("Temperature: " + temperature + " °C");
-        System.out.println("Humidity: " + humidity + " %");
+            if (mainData != null) {
+                Double temperature = (Double) mainData.get("temp");
+                Double humidity = (Double) mainData.get("humidity");
 
-        saveDataToFile(data);
+                System.out.println("City: " + cityName);
+                System.out.println("Temperature: " + temperature + " °C");
+                System.out.println("Humidity: " + humidity + " %");
+
+                saveDataToFile(data);
+            } else {
+                System.out.println("Error: 'main' was not found in JSON object.");
+            }
+        } else {
+            System.out.println("Error: JSON data was not processed correctly.");
+        }
     }
 
     public Map<String, Object> parseJson(String json) {
