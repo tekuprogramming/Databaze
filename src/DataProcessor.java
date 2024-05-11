@@ -4,16 +4,15 @@ import java.util.HashMap;
 import java.util.Map;
 public class DataProcessor {
     public void processAndSaveData(String data) throws IOException {
-        Map<String,String> jsonData = parseJson(data);
+        Map<String,Object> jsonData = parseJson(data);
 
         if (jsonData != null) {
-            String cityName = jsonData.get("name");
-            String weatherData = jsonData.get("weather");
+            String cityName = (String) jsonData.get("name");
+            Map<String, Object> weatherData = (Map<String, Object>) jsonData.get("weather");
 
             if (weatherData != null) {
-                Map<String, String> weatherMap = parseJson(weatherData);
-                String temperature = weatherMap.get("temperature");
-                String humidity = weatherMap.get("humidity");
+                Double temperature = (Double) weatherData.get("temperature");
+                Double humidity = (Double) weatherData.get("humidity");
 
                 System.out.println("City: " + cityName);
                 System.out.println("Temperature: " + temperature + " °C");
@@ -21,31 +20,27 @@ public class DataProcessor {
 
                 saveDataToFile(data);
             } else {
-                System.out.println("Error: 'weather' was not found in JSON object.");
+                System.err.println("Error: 'weather' was not found in JSON object.");
             }
         } else {
-            System.out.println("Error: JSON data was not processed correctly.");
+            System.err.println("Error: JSON data was not processed correctly.");
         }
     }
 
-    public Map<String, String> parseJson(String json) {
-        Map<String, String> jsonData = new HashMap<>();
+    public Map<String, Object> parseJson(String json) {
+        Map<String, Object> jsonData = new HashMap<>();
 
-        json = json.substring(1, json.length() - 1);
+        json = json.replaceAll("[{}\"]", "");
 
         String[] pairs = json.split(",");
 
         for (String pair : pairs) {
             String[] keyValue = pair.split(":");
-            if (keyValue.length == 2) {
-                String key = keyValue[0].trim().replaceAll("\"", "");
-                String value = keyValue[1].trim().replaceAll("\"", "");
+                String key = keyValue[0].trim();
+                String value = keyValue[1].trim();
 
                 jsonData.put(key, value);
-            } else {
-                System.out.println("Error: Incorrect format of the pair: " + pair);
             }
-        }
 
         return jsonData;
     }
