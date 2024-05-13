@@ -1,48 +1,59 @@
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 public class DataProcessor {
     public void processAndSaveData(String data) throws IOException {
-        try {
-            Pattern pattern = Pattern.compile("\"name\":\"(.*?)\".*?\"country\":\"(.*?)\".*?\"temp\":(.*?),\"humidity\":(.*?),\"speed\":(.*?),\"all\":(.*?),\"sunrise\":(.*?),\"sunset\":(.*?)\"lat\":(.*?),\"lon\":(.*?)\\}");
+        System.out.println("Gathered data: " + data);
 
-            Matcher matcher = pattern.matcher(data);
+        Map<String,Object> jsonData = parseJson(data);
 
-            if (matcher.find()) {
-                String cityName = matcher.group(1);
-                Double temperature = Double.parseDouble(matcher.group(3));
-                Integer humidity = Integer.parseInt(matcher.group(4));
-                Double windSpeed = Double.parseDouble(matcher.group(5));
-                Integer clouds = Integer.parseInt(matcher.group(6));
-                String country = matcher.group(2);
-                Long sunrise = Long.parseLong(matcher.group(7));
-                Long sunset = Long.parseLong(matcher.group(8));
-                Double latitude = Double.parseDouble(matcher.group(9));
-                Double longitude = Double.parseDouble(matcher.group(10));
+        if (jsonData != null) {
+            Map<String, Object> coordData = (Map<String, Object>) jsonData.get("coord");
+            Map<String, Object> mainData = (Map<String, Object>) jsonData.get("main");
+            Map<String, Object> windData = (Map<String, Object>) jsonData.get("wind");
+            Map<String, Object> cloudsData = (Map<String, Object>) jsonData.get("clouds");
+            Map<String, Object> sysData = (Map<String, Object>) jsonData.get("sys");
 
-                System.out.println("City: " + cityName);
+            if (coordData != null && mainData != null && windData != null && cloudsData != null && sysData != null) {
+                Double lon = Double.valueOf(coordData.get("lon").toString());
+                Double lat = Double.valueOf(coordData.get("lat").toString());
+
+                List<Map<String, Object>> weatherList = (List<Map<String, Object>>) jsonData.get("weather");
+                Map<String, Object> weatherData = weatherList.get(0);
+
+                String weatherMain = weatherData.get("main").toString();
+                String weatherDescription = weatherData.get("description").toString();
+
+                Double temperature = Double.valueOf(mainData.get("temp").toString());
+                Double humidity = Double.valueOf(mainData.get("humidity").toString());
+                Double windSpeed = Double.valueOf(windData.get("speed").toString());
+                Integer clouds = Integer.valueOf(cloudsData.get("all").toString());
+                String country = sysData.get("country").toString();
+                Long sunrise = Long.valueOf(sysData.get("sunrise").toString());
+                Long sunset = Long.valueOf(sysData.get("sunset").toString());
+
+                System.out.println("City: " + jsonData.get("name"));
                 System.out.println("Country: " + country);
-                System.out.println("Latitude: " + latitude);
-                System.out.println("Longitude: " + longitude);
+                System.out.println("Latitude: " + lat);
+                System.out.println("Longitude: " + lon);
                 System.out.println("Temperature: " + temperature + " °C");
                 System.out.println("Humidity: " + humidity + "%");
                 System.out.println("Wind speed: " + windSpeed + " m/s");
                 System.out.println("Cloudiness: " + clouds + "%");
+                System.out.println("Weather: " + weatherMain + " - " + weatherDescription);
                 System.out.println("Sunrise: " + sunrise);
-                System.out.println("Sunset: " + sunset);
+                System.out.println("Sunset: " + sunrise);
 
                 saveDataToFile(data);
             } else {
-                    System.err.println("Couldn't find the needed data.");
-                }
-            } catch (Exception e){
-                System.err.println("Error in processing data: " + e.getMessage());
+                System.err.println("Error: Data wasn't extracted correctly.");
             }
+        } else {
+            System.err.println("Error: JSON data was not processed correctly.");
         }
+    }
 
     public Map<String, Object> parseJson(String json) {
         Map<String, Object> jsonData = new HashMap<>();
