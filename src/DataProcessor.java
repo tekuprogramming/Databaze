@@ -11,8 +11,8 @@ public class DataProcessor {
             Map<String, Object> weatherData = (Map<String, Object>) jsonData.get("weather");
 
             if (weatherData != null) {
-                Double temperature = (Double) weatherData.get("temperature");
-                Double humidity = (Double) weatherData.get("humidity");
+                Double temperature = Double.valueOf(weatherData.get("temperature").toString());
+                Double humidity = Double.valueOf(weatherData.get("humidity").toString());
 
                 System.out.println("City: " + cityName);
                 System.out.println("Temperature: " + temperature + " °C");
