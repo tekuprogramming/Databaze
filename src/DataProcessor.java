@@ -5,20 +5,38 @@ import java.util.Map;
 public class DataProcessor {
     public void processAndSaveData(String data) throws IOException {
         System.out.println("Gathered data: " + data);
-        
+
         Map<String,Object> jsonData = parseJson(data);
 
         if (jsonData != null) {
-            String cityName = (String) jsonData.get("name");
-            Map<String, Object> weatherData = (Map<String, Object>) jsonData.get("weather");
+            Map<String, Object> coordData = (Map<String, Object>) jsonData.get("coord");
+            Map<String, Object> mainData = (Map<String, Object>) jsonData.get("main");
+            Map<String, Object> windData = (Map<String, Object>) jsonData.get("wind");
+            Map<String, Object> cloudsData = (Map<String, Object>) jsonData.get("clouds");
+            Map<String, Object> sysData = (Map<String, Object>) jsonData.get("sys");
 
-            if (weatherData != null) {
-                Double temperature = Double.valueOf(weatherData.get("temperature").toString());
-                Double humidity = Double.valueOf(weatherData.get("humidity").toString());
+            if (coordData != null && mainData != null && windData != null && cloudsData != null && sysData != null) {
+                Double lon = Double.valueOf(coordData.get("lon").toString());
+                Double lat = Double.valueOf(coordData.get("lat").toString());
 
-                System.out.println("City: " + cityName);
+                Double temperature = Double.valueOf(mainData.get("temp").toString());
+                Double humidity = Double.valueOf(mainData.get("humidity").toString());
+                Double windSpeed = Double.valueOf(windData.get("speed").toString());
+                Integer clouds = Integer.valueOf(cloudsData.get("all").toString());
+                String country = sysData.get("country").toString();
+                Long sunrise = Long.valueOf(sysData.get("sunrise").toString());
+                Long sunset = Long.valueOf(sysData.get("sunset").toString());
+
+                System.out.println("City: " + jsonData.get("name"));
+                System.out.println("Country: " + country);
+                System.out.println("Latitude: " + lon);
+                System.out.println("Longitude: " + country);
                 System.out.println("Temperature: " + temperature + " °C");
-                System.out.println("Humidity: " + humidity + " %");
+                System.out.println("Humidity: " + humidity + "%");
+                System.out.println("Wind speed: " + windSpeed + " m/s");
+                System.out.println("Cloudiness: " + clouds + "%");
+                System.out.println("Sunrise: " + sunrise);
+                System.out.println("Sunset: " + sunrise);
 
                 saveDataToFile(data);
             } else {
