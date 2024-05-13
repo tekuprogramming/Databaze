@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 public class DataProcessor {
     public void processAndSaveData(String data) throws IOException {
+        System.out.println("Gathered data: " + data);
+        
         Map<String,Object> jsonData = parseJson(data);
 
         if (jsonData != null) {
