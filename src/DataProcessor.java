@@ -9,11 +9,11 @@ public class DataProcessor {
         Map<String,Object> jsonData = parseJson(data);
 
         if (jsonData != null) {
-            Map<String, Object> coordData = extractMap(jsonData, "coord");
-            Map<String, Object> mainData = extractMap(jsonData, "main");
-            Map<String, Object> windData = extractMap(jsonData, "wind");
-            Map<String, Object> cloudsData = extractMap(jsonData, "clouds");
-            Map<String, Object> sysData = extractMap(jsonData, "sys");
+            Map<String, Object> coordData = (Map<String, Object>) jsonData.get("coord");
+            Map<String, Object> mainData = (Map<String, Object>) jsonData.get("main");
+            Map<String, Object> windData = (Map<String, Object>) jsonData.get("wind");
+            Map<String, Object> cloudsData = (Map<String, Object>) jsonData.get("clouds");
+            Map<String, Object> sysData = (Map<String, Object>) jsonData.get("sys");
 
             if (coordData != null && mainData != null && windData != null && cloudsData != null && sysData != null) {
                 Double lon = Double.parseDouble(coordData.get("lon").toString());
@@ -60,44 +60,11 @@ public class DataProcessor {
                 String key = keyValue[0].trim();
                 String value = keyValue[1].trim();
 
-                if (value.startsWith("{")) {
-                    int nestedJsonStartIndex = json.indexOf(key + ":") + key.length() + 1;
-                    int nestedJsonEndIndex = findClosingBraceIndex(json, nestedJsonStartIndex);
-                    value = json.substring(nestedJsonStartIndex, nestedJsonEndIndex + 1);
-
-                    Map<String, Object> nestedJsonData = parseJson(value);
-                    jsonData.put(key, nestedJsonData);
-                } else {
-                    jsonData.put(key, value);
-                }
+                jsonData.put(key, value);
             }
             }
 
         return jsonData;
-    }
-
-    public int findClosingBraceIndex(String json, int startIndex) {
-        int braceCount = 0;
-        for (int i = startIndex; i < json.length(); i++) {
-            char ch = json.charAt(i);
-            if (ch == '{') {
-                braceCount++;
-            } else if (ch == '}') {
-                braceCount--;
-                if (braceCount == 0) {
-                    return i;
-                }
-            }
-        }
-        return -1;
-    }
-
-    public Map<String, Object> extractMap(Map<String, Object> jsonData, String key) {
-        Object value = jsonData.get(key);
-        if (value instanceof Map) {
-            return (Map<String, Object>) value;
-        }
-        return null;
     }
 
     public void saveDataToFile(String data) throws IOException {
