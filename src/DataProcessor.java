@@ -1,3 +1,4 @@
+import java.awt.geom.Arc2D;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashMap;
@@ -10,23 +11,23 @@ public class DataProcessor {
         Map<String,Object> jsonData = parseJson(data);
 
         if (jsonData != null) {
-            Map<String, Object> coordData = (Map<String, Object>) jsonData.get("coord");
-            Map<String, Object> mainData = (Map<String, Object>) jsonData.get("main");
-            Map<String, Object> windData = (Map<String, Object>) jsonData.get("wind");
-            Map<String, Object> cloudsData = (Map<String, Object>) jsonData.get("clouds");
-            Map<String, Object> sysData = (Map<String, Object>) jsonData.get("sys");
+            Map<String, Object> coordData = extractMap(jsonData, "coord");
+            Map<String, Object> mainData = extractMap(jsonData, "main");
+            Map<String, Object> windData = extractMap(jsonData, "wind");
+            Map<String, Object> cloudsData = extractMap(jsonData, "clouds");
+            Map<String, Object> sysData = extractMap(jsonData, "sys");
 
             if (coordData != null && mainData != null && windData != null && cloudsData != null && sysData != null) {
-                Double lon = (Double) coordData.get("lon");
-                Double lat = (Double) coordData.get("lat");
+                Double lon = Double.parseDouble(coordData.get("lon").toString());
+                Double lat = Double.parseDouble(coordData.get("lat").toString());
 
-                Double temperature = (Double) mainData.get("temp");
-                Double humidity = (Double) mainData.get("humidity");
-                Double windSpeed = (Double) windData.get("speed");
-                Integer clouds = (Integer) cloudsData.get("all");
-                String country = (String) sysData.get("country");
-                Long sunrise = (Long) sysData.get("sunrise");
-                Long sunset = (Long) sysData.get("sunset");
+                Double temperature = Double.parseDouble(mainData.get("temp").toString());
+                Double humidity = Double.parseDouble(mainData.get("humidity").toString());
+                Double windSpeed = Double.parseDouble(windData.get("speed").toString());
+                Integer clouds = Integer.parseInt(cloudsData.get("all").toString());
+                String country = sysData.get("country").toString();
+                Long sunrise = Long.parseLong(sysData.get("sunrise").toString());
+                Long sunset = Long.parseLong(sysData.get("sunset").toString());
 
                 System.out.println("City: " + jsonData.get("name"));
                 System.out.println("Country: " + country);
@@ -52,18 +53,26 @@ public class DataProcessor {
         Map<String, Object> jsonData = new HashMap<>();
 
         json = json.replaceAll("[{}\"]", "");
-
         String[] pairs = json.split(",");
 
         for (String pair : pairs) {
             String[] keyValue = pair.split(":");
+            if (keyValue.length == 2) {
                 String key = keyValue[0].trim();
                 String value = keyValue[1].trim();
-
                 jsonData.put(key, value);
+            }
             }
 
         return jsonData;
+    }
+
+    public Map<String, Object> extractMap(Map<String, Object> jsonData, String key) {
+        if (jsonData.containsKey(key)) {
+            String value = jsonData.get(key).toString();
+            return parseJson(value);
+        }
+        return null;
     }
 
     public void saveDataToFile(String data) throws IOException {
