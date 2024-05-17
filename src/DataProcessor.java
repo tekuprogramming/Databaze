@@ -16,18 +16,18 @@ public class DataProcessor {
             Map<String, Object> sysData = getNestedMap(jsonData, "sys");
 
             if (coordData != null && mainData != null && windData != null && cloudsData != null && sysData != null) {
-                Double lon = Double.parseDouble(coordData.get("lon").toString());
-                Double lat = Double.parseDouble(coordData.get("lat").toString());
+                Double lon = parseDouble(coordData.get("lon").toString());
+                Double lat = parseDouble(coordData.get("lat").toString());
 
-                Double temperature = Double.parseDouble(mainData.get("temp").toString());
-                Double humidity = Double.parseDouble(mainData.get("humidity").toString());
-                Double windSpeed = Double.parseDouble(windData.get("speed").toString());
-                Integer clouds = Integer.parseInt(cloudsData.get("all").toString());
-                String country = sysData.get("country").toString();
-                Long sunrise = Long.parseLong(sysData.get("sunrise").toString());
-                Long sunset = Long.parseLong(sysData.get("sunset").toString());
+                Double temperature = parseDouble(mainData.get("temp").toString());
+                Double humidity = parseDouble(mainData.get("humidity").toString());
+                Double windSpeed = parseDouble(windData.get("speed").toString());
+                Integer clouds = parseInt(cloudsData.get("all").toString());
+                String country = parseString((sysData.get("country")));
+                Long sunrise = parseLong(sysData.get("sunrise").toString());
+                Long sunset = parseLong(sysData.get("sunset").toString());
 
-                System.out.println("City: " + jsonData.get("name"));
+                System.out.println("City: " + parseString(jsonData.get("name")));
                 System.out.println("Country: " + country);
                 System.out.println("Latitude: " + lat);
                 System.out.println("Longitude: " + lon);
@@ -86,6 +86,43 @@ public class DataProcessor {
         }
 
         return nestedMap;
+    }
+
+    public Double parseDouble(Object value) {
+        if (value != null) {
+            try {
+                return Double.parseDouble(value.toString());
+            } catch (NumberFormatException e) {
+                System.out.println("Error while parsing to Double: " + value);
+            }
+        }
+        return null;
+    }
+
+    public Integer parseInt(Object value) {
+        if (value != null) {
+            try {
+                return Integer.parseInt(value.toString());
+            } catch (NumberFormatException e) {
+                System.out.println("Error while parsing to Integer: " + value);
+            }
+        }
+        return null;
+    }
+
+    public Long parseLong(Object value) {
+        if (value != null) {
+            try {
+                return Long.parseLong(value.toString());
+            } catch (NumberFormatException e) {
+                System.out.println("Error while parsing to Long: " + value);
+            }
+        }
+        return null;
+    }
+
+    public String parseString(Object value) {
+        return value != null ? value.toString() : null;
     }
 
     public void saveDataToFile(String data) throws IOException {
