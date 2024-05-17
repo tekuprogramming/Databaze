@@ -9,23 +9,23 @@ public class DataProcessor {
         Map<String,Object> jsonData = parseJson(data);
 
         if (jsonData != null) {
-            Map<String, Object> coordData = getNestedMap(jsonData, "coord");
-            Map<String, Object> mainData = getNestedMap(jsonData, "main");
-            Map<String, Object> windData = getNestedMap(jsonData, "wind");
-            Map<String, Object> cloudsData = getNestedMap(jsonData, "clouds");
-            Map<String, Object> sysData = getNestedMap(jsonData, "sys");
+            Map<String, Object> coordData = (Map<String, Object>) jsonData.get("coord");
+            Map<String, Object> mainData = (Map<String, Object>) jsonData.get("main");
+            Map<String, Object> windData = (Map<String, Object>) jsonData.get("wind");
+            Map<String, Object> cloudsData = (Map<String, Object>) jsonData.get("clouds");
+            Map<String, Object> sysData = (Map<String, Object>) jsonData.get("sys");
 
             if (coordData != null && mainData != null && windData != null && cloudsData != null && sysData != null) {
-                Double lon = parseDouble(coordData.get("lon").toString());
-                Double lat = parseDouble(coordData.get("lat").toString());
+                Double lon = parseDouble(coordData.get("lon"));
+                Double lat = parseDouble(coordData.get("lat"));
 
-                Double temperature = parseDouble(mainData.get("temp").toString());
-                Double humidity = parseDouble(mainData.get("humidity").toString());
-                Double windSpeed = parseDouble(windData.get("speed").toString());
-                Integer clouds = parseInt(cloudsData.get("all").toString());
+                Double temperature = parseDouble(mainData.get("temp"));
+                Double humidity = parseDouble(mainData.get("humidity"));
+                Double windSpeed = parseDouble(windData.get("speed"));
+                Integer clouds = parseInt(cloudsData.get("all"));
                 String country = parseString((sysData.get("country")));
-                Long sunrise = parseLong(sysData.get("sunrise").toString());
-                Long sunset = parseLong(sysData.get("sunset").toString());
+                Long sunrise = parseLong(sysData.get("sunrise"));
+                Long sunset = parseLong(sysData.get("sunset"));
 
                 System.out.println("City: " + parseString(jsonData.get("name")));
                 System.out.println("Country: " + country);
@@ -60,32 +60,26 @@ public class DataProcessor {
                 String key = keyValue[0].trim();
                 String value = keyValue[1].trim();
 
-                jsonData.put(key, value);
+                if (value.startsWith("{")) {
+                    Map<String, Object> nestedMap = new HashMap<>();
+                    value = value.replaceAll("[{}]", "");
+                    String[] nestedPairs = value.split(",");
+                    for (String nestedPair : nestedPairs) {
+                        String[] nestedKeyValue = nestedPair.split(":");
+                        if (nestedKeyValue.length == 2) {
+                            String nestedKey = nestedKeyValue[0].trim();
+                            String nestedValue = nestedKeyValue[1].trim();
+                            nestedMap.put(nestedKey, nestedValue);
+                        }
+                    }
+                    jsonData.put(key, nestedMap);
+                } else {
+                    jsonData.put(key, value);
+                }
             }
             }
 
         return jsonData;
-    }
-
-    public Map<String, Object> getNestedMap(Map<String, Object> jsonData, String key) {
-        Map<String, Object> nestedMap = new HashMap<>();
-        String nestedJson = (String) jsonData.get(key);
-
-        if (nestedJson != null) {
-            nestedJson = nestedJson.replaceAll("[{}\"]", "").trim();
-            String[] pairs = nestedJson.split(",");
-
-            for (String pair : pairs) {
-                String[] keyValue = pair.split(":");
-                if (keyValue.length == 2) {
-                    String nestedKey = keyValue[0].trim();
-                    String nestedValue = keyValue[1].trim();
-                    nestedMap.put(nestedKey, nestedValue);
-                }
-            }
-        }
-
-        return nestedMap;
     }
 
     public Double parseDouble(Object value) {
