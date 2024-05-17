@@ -9,11 +9,11 @@ public class DataProcessor {
         Map<String,Object> jsonData = parseJson(data);
 
         if (jsonData != null) {
-            Map<String, Object> coordData = (Map<String, Object>) jsonData.get("coord");
-            Map<String, Object> mainData = (Map<String, Object>) jsonData.get("main");
-            Map<String, Object> windData = (Map<String, Object>) jsonData.get("wind");
-            Map<String, Object> cloudsData = (Map<String, Object>) jsonData.get("clouds");
-            Map<String, Object> sysData = (Map<String, Object>) jsonData.get("sys");
+            Map<String, Object> coordData = getNestedMap(jsonData, "coord");
+            Map<String, Object> mainData = getNestedMap(jsonData, "main");
+            Map<String, Object> windData = getNestedMap(jsonData, "wind");
+            Map<String, Object> cloudsData = getNestedMap(jsonData, "clouds");
+            Map<String, Object> sysData = getNestedMap(jsonData, "sys");
 
             if (coordData != null && mainData != null && windData != null && cloudsData != null && sysData != null) {
                 Double lon = Double.parseDouble(coordData.get("lon").toString());
@@ -65,6 +65,27 @@ public class DataProcessor {
             }
 
         return jsonData;
+    }
+
+    public Map<String, Object> getNestedMap(Map<String, Object> jsonData, String key) {
+        Map<String, Object> nestedMap = new HashMap<>();
+        String nestedJson = (String) jsonData.get(key);
+
+        if (nestedJson != null) {
+            nestedJson = nestedJson.replaceAll("[{}\"]", "").trim();
+            String[] pairs = nestedJson.split(",");
+
+            for (String pair : pairs) {
+                String[] keyValue = pair.split(":");
+                if (keyValue.length == 2) {
+                    String nestedKey = keyValue[0].trim();
+                    String nestedValue = keyValue[1].trim();
+                    nestedMap.put(nestedKey, nestedValue);
+                }
+            }
+        }
+
+        return nestedMap;
     }
 
     public void saveDataToFile(String data) throws IOException {
