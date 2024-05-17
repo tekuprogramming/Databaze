@@ -52,15 +52,24 @@ public class DataProcessor {
     public Map<String, Object> parseJson(String json) {
         Map<String, Object> jsonData = new HashMap<>();
 
-        json = json.replaceAll("[{}\"]", "");
+        json = json.replaceAll("[{}\"]", "").replace(" ", "");
         String[] pairs = json.split(",");
 
         for (String pair : pairs) {
             String[] keyValue = pair.split(":");
             if (keyValue.length == 2) {
-                String key = keyValue[0].trim();
-                String value = keyValue[1].trim();
-                jsonData.put(key, value);
+                String key = keyValue[0];
+                String value = keyValue[1];
+
+                try {
+                    if (value.contains(".")) {
+                        jsonData.put(key, Double.parseDouble(value));
+                    } else {
+                        jsonData.put(key, Integer.parseInt(value));
+                    }
+                } catch (NumberFormatException e) {
+                    jsonData.put(key, value);
+                }
             }
             }
 
