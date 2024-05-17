@@ -1,8 +1,6 @@
-import java.awt.geom.Arc2D;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 public class DataProcessor {
     public void processAndSaveData(String data) throws IOException {
@@ -52,22 +50,24 @@ public class DataProcessor {
     public Map<String, Object> parseJson(String json) {
         Map<String, Object> jsonData = new HashMap<>();
 
-        json = json.replaceAll("[{}\"]", "").replace(" ", "");
+        json = json.replaceAll("[{}\"]", "").trim();
+
         String[] pairs = json.split(",");
 
         for (String pair : pairs) {
             String[] keyValue = pair.split(":");
             if (keyValue.length == 2) {
-                String key = keyValue[0];
-                String value = keyValue[1];
+                String key = keyValue[0].trim();
+                String value = keyValue[1].trim();
 
-                try {
-                    if (value.contains(".")) {
-                        jsonData.put(key, Double.parseDouble(value));
-                    } else {
-                        jsonData.put(key, Integer.parseInt(value));
-                    }
-                } catch (NumberFormatException e) {
+                if (value.startsWith("{")) {
+                    int nestedJsonStartIndex = json.indexOf(key + ":") + key.length() + 1;
+                    int nestedJsonEndIndex = findClosingBraceIndex(json, nestedJsonStartIndex);
+                    value = json.substring(nestedJsonStartIndex, nestedJsonEndIndex + 1);
+
+                    Map<String, Object> nestedJsonData = parseJson(value);
+                    jsonData.put(key, nestedJsonData);
+                } else {
                     jsonData.put(key, value);
                 }
             }
@@ -76,10 +76,26 @@ public class DataProcessor {
         return jsonData;
     }
 
+    public int findClosingBraceIndex(String json, int startIndex) {
+        int braceCount = 0;
+        for (int i = startIndex; i < json.length(); i++) {
+            char ch = json.charAt(i);
+            if (ch == '{') {
+                braceCount++;
+            } else if (ch == '}') {
+                braceCount--;
+                if (braceCount == 0) {
+                    return i;
+                }
+            }
+        }
+        return -1;
+    }
+
     public Map<String, Object> extractMap(Map<String, Object> jsonData, String key) {
-        if (jsonData.containsKey(key)) {
-            String value = jsonData.get(key).toString();
-            return parseJson(value);
+        Object value = jsonData.get(key);
+        if (value instanceof Map) {
+            return (Map<String, Object>) value;
         }
         return null;
     }
