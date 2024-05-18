@@ -59,10 +59,26 @@ public class DataProcessor {
             writer.write("Wind speed: " + windSpeed + " m/s\n");
             writer.write("Cloudiness: " + cloudiness + "%\n");
             writer.write("Sunrise: " + sunrise + "\n");
-            writer.write("Sunset: " + longitude + "\n");
+            writer.write("Sunset: " + sunset + "\n");
+            String weatherCategory = getWeatherCategory(temperature);
+            System.out.println("Weather category: " + weatherCategory);
             System.out.println("Data saved to processed_data.txt");
         } catch (IOException e) {
             System.out.println("Error saving data to file: " + e.getMessage());
+        }
+    }
+
+    public String getWeatherCategory(double temperature) {
+        if (temperature < 0) {
+            return "Freezing";
+        } else if (temperature >= 0 && temperature < 10) {
+            return "Cold";
+        } else if (temperature >= 10 && temperature < 20) {
+            return "Cool";
+        } else if (temperature >= 20 && temperature < 30) {
+            return "Warm";
+        } else {
+            return "Hot";
         }
     }
 }
