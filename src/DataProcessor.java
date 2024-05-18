@@ -1,33 +1,35 @@
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 public class DataProcessor {
     public void processAndSaveData(String data) throws IOException {
         System.out.println("Gathered data: " + data);
 
-        Map<String,Object> jsonData = parseJson(data);
+        Gson gson = new Gson();
+        JsonObject jsonData = gson.fromJson(data, JsonObject.class);
 
         if (jsonData != null) {
-            Map<String, Object> coordData = (Map<String, Object>) jsonData.get("coord");
-            Map<String, Object> mainData = (Map<String, Object>) jsonData.get("main");
-            Map<String, Object> windData = (Map<String, Object>) jsonData.get("wind");
-            Map<String, Object> cloudsData = (Map<String, Object>) jsonData.get("clouds");
-            Map<String, Object> sysData = (Map<String, Object>) jsonData.get("sys");
+            JsonObject coordData = jsonData.getAsJsonObject("coord");
+            JsonObject mainData = jsonData.getAsJsonObject("main");
+            JsonObject windData = jsonData.getAsJsonObject("wind");
+            JsonObject cloudsData = jsonData.getAsJsonObject("clouds");
+            JsonObject sysData = jsonData.getAsJsonObject("sys");
 
             if (coordData != null && mainData != null && windData != null && cloudsData != null && sysData != null) {
-                Double lon = parseDouble(coordData.get("lon"));
-                Double lat = parseDouble(coordData.get("lat"));
+                Double lon = coordData.get("lon").getAsDouble();
+                Double lat = coordData.get("lat").getAsDouble();
 
-                Double temperature = parseDouble(mainData.get("temp"));
-                Double humidity = parseDouble(mainData.get("humidity"));
-                Double windSpeed = parseDouble(windData.get("speed"));
-                Integer clouds = parseInt(cloudsData.get("all"));
-                String country = parseString((sysData.get("country")));
-                Long sunrise = parseLong(sysData.get("sunrise"));
-                Long sunset = parseLong(sysData.get("sunset"));
+                Double temperature = mainData.get("temp").getAsDouble();
+                Double humidity = mainData.get("humidity").getAsDouble();
+                Double windSpeed = windData.get("speed").getAsDouble();
+                Integer clouds = cloudsData.get("all").getAsInt();
+                String country = sysData.get("country").getAsString();
+                Long sunrise = sysData.get("sunrise").getAsLong();
+                Long sunset = sysData.get("sunset").getAsLong();
 
-                System.out.println("City: " + parseString(jsonData.get("name")));
+                System.out.println("City: " + jsonData.get("name").getAsString());
                 System.out.println("Country: " + country);
                 System.out.println("Latitude: " + lat);
                 System.out.println("Longitude: " + lon);
@@ -45,78 +47,6 @@ public class DataProcessor {
         } else {
             System.out.println("Error: JSON data was not processed correctly.");
         }
-    }
-
-    public Map<String, Object> parseJson(String json) {
-        Map<String, Object> jsonData = new HashMap<>();
-
-        json = json.replaceAll("[{}\"]", "").trim();
-
-        String[] pairs = json.split(",");
-
-        for (String pair : pairs) {
-            String[] keyValue = pair.split(":");
-            if (keyValue.length == 2) {
-                String key = keyValue[0].trim();
-                String value = keyValue[1].trim();
-
-                if (value.startsWith("{")) {
-                    Map<String, Object> nestedMap = new HashMap<>();
-                    value = value.replaceAll("[{}]", "");
-                    String[] nestedPairs = value.split(",");
-                    for (String nestedPair : nestedPairs) {
-                        String[] nestedKeyValue = nestedPair.split(":");
-                        if (nestedKeyValue.length == 2) {
-                            String nestedKey = nestedKeyValue[0].trim();
-                            String nestedValue = nestedKeyValue[1].trim();
-                            nestedMap.put(nestedKey, nestedValue);
-                        }
-                    }
-                    jsonData.put(key, nestedMap);
-                } else {
-                    jsonData.put(key, value);
-                }
-            }
-            }
-
-        return jsonData;
-    }
-
-    public Double parseDouble(Object value) {
-        if (value != null) {
-            try {
-                return Double.parseDouble(value.toString());
-            } catch (NumberFormatException e) {
-                System.out.println("Error while parsing to Double: " + value);
-            }
-        }
-        return null;
-    }
-
-    public Integer parseInt(Object value) {
-        if (value != null) {
-            try {
-                return Integer.parseInt(value.toString());
-            } catch (NumberFormatException e) {
-                System.out.println("Error while parsing to Integer: " + value);
-            }
-        }
-        return null;
-    }
-
-    public Long parseLong(Object value) {
-        if (value != null) {
-            try {
-                return Long.parseLong(value.toString());
-            } catch (NumberFormatException e) {
-                System.out.println("Error while parsing to Long: " + value);
-            }
-        }
-        return null;
-    }
-
-    public String parseString(Object value) {
-        return value != null ? value.toString() : null;
     }
 
     public void saveDataToFile(String data) throws IOException {
