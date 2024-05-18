@@ -3,12 +3,15 @@ import com.google.gson.JsonObject;
 
 import java.io.FileWriter;
 import java.io.IOException;
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.util.Locale;
+
 public class DataProcessor {
     public void processAndSaveData(String data) throws IOException {
-        System.out.println("Gathered data: " + data);
 
-        Gson gson = new Gson();
-        JsonObject jsonData = gson.fromJson(data, JsonObject.class);
+        JsonObject jsonData = parseJson(data);
 
         if (jsonData != null) {
             JsonObject coordData = jsonData.getAsJsonObject("coord");
@@ -29,11 +32,18 @@ public class DataProcessor {
                 Long sunrise = sysData.get("sunrise").getAsLong();
                 Long sunset = sysData.get("sunset").getAsLong();
 
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
+                                .withLocale(Locale.UK)
+                        .withZone(ZoneId.systemDefault());
+
+                String sunriseFormatted = formatter.format(Instant.ofEpochSecond(sunrise));
+                String sunsetFormatted = formatter.format(Instant.ofEpochSecond(sunset));
+
                 System.out.println("City: " + jsonData.get("name").getAsString());
                 System.out.println("Country: " + country);
                 System.out.println("Latitude: " + lat);
                 System.out.println("Longitude: " + lon);
-                System.out.println("Temperature: " + temperature + " °C");
+                System.out.printf("Temperature: %.2f °C%n", temperature);
                 System.out.println("Humidity: " + humidity + "%");
                 System.out.println("Wind speed: " + windSpeed + " m/s");
                 System.out.println("Cloudiness: " + clouds + "%");
@@ -47,6 +57,11 @@ public class DataProcessor {
         } else {
             System.out.println("Error: JSON data was not processed correctly.");
         }
+    }
+
+    public JsonObject parseJson(String json) {
+        Gson gson = new Gson();
+        return gson.fromJson(json, JsonObject.class);
     }
 
     public void saveDataToFile(String data) throws IOException {
