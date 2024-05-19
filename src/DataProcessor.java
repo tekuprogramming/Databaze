@@ -1,24 +1,26 @@
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
-import java.io.BufferedReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 
 public class DataProcessor {
-    private static final String API_KEY = "https://api.openweathermap.org/data/2.5/weather?q=London,uk&APPID=3eaab97ed540e25e7b261d686d5dfc42";
     public void processAndSaveData(String jsonData) throws IOException {
         Gson gson = new Gson();
+
         JsonObject jsonObject = gson.fromJson(jsonData, JsonObject.class);
 
-        if (jsonObject != null) {
+        processCurrentData(jsonObject);
+
+        processForecastData(jsonObject);
+    }
+
+    public void processCurrentData(JsonObject jsonObject) throws IOException {
             String city = jsonObject.get("name").getAsString();
             String country = jsonObject.getAsJsonObject("sys").get("country").getAsString();
             double latitude = jsonObject.getAsJsonObject("coord").get("lat").getAsDouble();
@@ -37,6 +39,7 @@ public class DataProcessor {
             String sunrise = formatter.format(Instant.ofEpochSecond(sunriseUnix));
             String sunset = formatter.format(Instant.ofEpochSecond(sunsetUnix));
 
+            System.out.println("Current weather data:");
             System.out.println("City: " + city);
             System.out.println("Country: " + country);
             System.out.println("Latitude: " + latitude);
@@ -47,43 +50,35 @@ public class DataProcessor {
             System.out.println("Cloudiness: " + cloudiness + "%");
             System.out.println("Sunrise: " + sunrise);
             System.out.println("Sunset: " + sunset);
-
-            fetchHistoricalData(latitude, longitude, sunrise);
+            System.out.println("---------------------------------------");
 
             saveDataToFile(city, country, latitude, longitude, temperature, humidity, windSpeed, cloudiness, sunrise, sunset);
-        } else {
-            System.out.println("Error: JSON data wasn't processed correctly.");
-        }
     }
 
-    public void fetchHistoricalData(double latitude, double longitude, String sunrise) {
-        try {
-            String apiUrl = String.format(
-                    "https://api.openweathermap.org/data/2.5/onecall/timemachine?lat=51.5085&lon=-0.1257&dt=1715585617&appid=3eaab97ed540e25e7b261d686d5dfc42",
-                    latitude, longitude, sunrise, API_KEY);
-            URL url = new URL(apiUrl);
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setRequestMethod("GET");
+    public void processForecastData(JsonObject jsonObject) {
+        JsonArray forecasts = jsonObject.getAsJsonArray("list");
 
-            BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-            StringBuilder response = new StringBuilder();
-            String line;
+        for (int i = 0; i < forecasts.size(); i++) {
+            JsonObject forecast = forecasts.get(i).getAsJsonObject();
+            long forecastTimestamp = forecast.get("dt").getAsLong();
+            double forecastTemperature = forecast.getAsJsonObject("main").get("temp").getAsDouble() - 273.15;
+            double forecastHumidity = forecast.getAsJsonObject("main").get("humidity").getAsDouble();
+            double forecastWindSpeed = forecast.getAsJsonObject("wind").get("speed").getAsDouble();
+            int forecastCloudiness = forecast.getAsJsonObject("clouds").get("all").getAsInt();
 
-            while ((line = reader.readLine()) != null) {
-                response.append(line);
-            }
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
+                    .withLocale(Locale.UK)
+                    .withZone(ZoneId.systemDefault());
 
-            reader.close();
-            connection.disconnect();
+            String forecastDateTime = formatter.format(Instant.ofEpochSecond(forecastTimestamp));
 
-            String responseData = response.toString();
-            Gson gson = new Gson();
-            JsonObject historicalData = gson.fromJson(responseData, JsonObject.class);
-
-            System.out.println("Historical data: " + historicalData.toString());
-
-        } catch (Exception e) {
-            System.out.println("Error while getting historical data: " + e.getMessage());
+            System.out.println("Forecast data:");
+            System.out.println("Timestamp: " + forecastDateTime);
+            System.out.printf("Temperature: %.2f °C%n", forecastTemperature);
+            System.out.println("Humidity: " + forecastHumidity+ "%");
+            System.out.println("Wind speed: " + forecastWindSpeed + " m/s");
+            System.out.println("Cloudiness: " + forecastCloudiness + "%");
+            System.out.println("---------------------------------------");
         }
     }
 
