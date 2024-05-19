@@ -1,50 +1,90 @@
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
+import java.io.BufferedReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 
 public class DataProcessor {
+    private static final String API_KEY = "https://api.openweathermap.org/data/2.5/weather?q=London,uk&APPID=3eaab97ed540e25e7b261d686d5dfc42";
     public void processAndSaveData(String jsonData) throws IOException {
         Gson gson = new Gson();
-
         JsonObject jsonObject = gson.fromJson(jsonData, JsonObject.class);
 
-        String city = jsonObject.get("name").getAsString();
-        String country = jsonObject.getAsJsonObject("sys").get("country").getAsString();
-        double latitude = jsonObject.getAsJsonObject("coord").get("lat").getAsDouble();
-        double longitude = jsonObject.getAsJsonObject("coord").get("lon").getAsDouble();
-        double temperature = jsonObject.getAsJsonObject("main").get("temp").getAsDouble() - 273.15;
-        double humidity = jsonObject.getAsJsonObject("main").get("humidity").getAsDouble();
-        double windSpeed = jsonObject.getAsJsonObject("wind").get("speed").getAsDouble();
-        int cloudiness = jsonObject.getAsJsonObject("clouds").get("all").getAsInt();
-        long sunriseUnix = jsonObject.getAsJsonObject("sys").get("sunrise").getAsLong();
-        long sunsetUnix = jsonObject.getAsJsonObject("sys").get("sunset").getAsLong();
+        if (jsonObject != null) {
+            String city = jsonObject.get("name").getAsString();
+            String country = jsonObject.getAsJsonObject("sys").get("country").getAsString();
+            double latitude = jsonObject.getAsJsonObject("coord").get("lat").getAsDouble();
+            double longitude = jsonObject.getAsJsonObject("coord").get("lon").getAsDouble();
+            double temperature = jsonObject.getAsJsonObject("main").get("temp").getAsDouble() - 273.15;
+            double humidity = jsonObject.getAsJsonObject("main").get("humidity").getAsDouble();
+            double windSpeed = jsonObject.getAsJsonObject("wind").get("speed").getAsDouble();
+            int cloudiness = jsonObject.getAsJsonObject("clouds").get("all").getAsInt();
+            long sunriseUnix = jsonObject.getAsJsonObject("sys").get("sunrise").getAsLong();
+            long sunsetUnix = jsonObject.getAsJsonObject("sys").get("sunset").getAsLong();
 
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
-                .withLocale(Locale.UK)
-                .withZone(ZoneId.systemDefault());
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
+                    .withLocale(Locale.UK)
+                    .withZone(ZoneId.systemDefault());
 
-        String sunrise = formatter.format(Instant.ofEpochSecond(sunriseUnix));
-        String sunset = formatter.format(Instant.ofEpochSecond(sunsetUnix));
+            String sunrise = formatter.format(Instant.ofEpochSecond(sunriseUnix));
+            String sunset = formatter.format(Instant.ofEpochSecond(sunsetUnix));
 
-        System.out.println("City: " + city);
-        System.out.println("Country: " + country);
-        System.out.println("Latitude: " + latitude);
-        System.out.println("Longitude: " + longitude);
-        System.out.printf("Temperature: %.2f °C%n", temperature);
-        System.out.println("Humidity: " + humidity + "%");
-        System.out.println("Wind speed: " + windSpeed + " m/s");
-        System.out.println("Cloudiness: " + cloudiness + "%");
-        System.out.println("Sunrise: " + sunrise);
-        System.out.println("Sunset: " + sunset);
+            System.out.println("City: " + city);
+            System.out.println("Country: " + country);
+            System.out.println("Latitude: " + latitude);
+            System.out.println("Longitude: " + longitude);
+            System.out.printf("Temperature: %.2f °C%n", temperature);
+            System.out.println("Humidity: " + humidity + "%");
+            System.out.println("Wind speed: " + windSpeed + " m/s");
+            System.out.println("Cloudiness: " + cloudiness + "%");
+            System.out.println("Sunrise: " + sunrise);
+            System.out.println("Sunset: " + sunset);
 
-        saveDataToFile(city, country, latitude, longitude, temperature, humidity, windSpeed, cloudiness, sunrise, sunset);
+            fetchHistoricalData(latitude, longitude, sunrise);
 
+            saveDataToFile(city, country, latitude, longitude, temperature, humidity, windSpeed, cloudiness, sunrise, sunset);
+        } else {
+            System.out.println("Error: JSON data wasn't processed correctly.");
+        }
+    }
+
+    public void fetchHistoricalData(double latitude, double longitude, String sunrise) {
+        try {
+            String apiUrl = String.format(
+                    "https://api.openweathermap.org/data/2.5/onecall/timemachine?lat=51.5085&lon=-0.1257&dt=1715585617&appid=3eaab97ed540e25e7b261d686d5dfc42",
+                    latitude, longitude, sunrise, API_KEY);
+            URL url = new URL(apiUrl);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("GET");
+
+            BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            StringBuilder response = new StringBuilder();
+            String line;
+
+            while ((line = reader.readLine()) != null) {
+                response.append(line);
+            }
+
+            reader.close();
+            connection.disconnect();
+
+            String responseData = response.toString();
+            Gson gson = new Gson();
+            JsonObject historicalData = gson.fromJson(responseData, JsonObject.class);
+
+            System.out.println("Historical data: " + historicalData.toString());
+
+        } catch (Exception e) {
+            System.out.println("Error while getting historical data: " + e.getMessage());
+        }
     }
 
     public void saveDataToFile(String city, String country, double latitude, double longitude, double temperature,
