@@ -49,18 +49,22 @@ public class DataProcessor {
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
 
-            BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-            StringBuilder response = new StringBuilder();
-            String line;
-            while ((line = reader.readLine()) != null) {
-                response.append(line);
-            }
-            reader.close();
+            int responseCode = connection.getResponseCode();
+            if (responseCode == 200) {
+                BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                StringBuilder response = new StringBuilder();
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    response.append(line);
+                }
+                reader.close();
 
-            forecastData = gson.fromJson(response.toString(), JsonObject.class);
+                forecastData = gson.fromJson(response.toString(), JsonObject.class);
+            } else {
+                throw new IOException("Error response code: " + responseCode);
+            }
         } catch (Exception e) {
             System.out.println("Error getting forecast data: " + e.getMessage());
-            return null;
         }
         return forecastData;
     }
