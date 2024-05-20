@@ -14,7 +14,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 
 public class DataProcessor {
-    private String apiKey = "3eaab97ed540e25e7b261d686d5dfc42";
     private Gson gson = new Gson();
     private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
             .withLocale(Locale.UK)
@@ -40,19 +39,13 @@ public class DataProcessor {
     public JsonObject getForecastData(JsonObject jsonObject) {
         JsonObject forecastData = new JsonObject();
         try {
-            double latitude = jsonObject.getAsJsonObject("coord").get("lat").getAsDouble();
-            double longitude = jsonObject.getAsJsonObject("coord").get("lon").getAsDouble();
-
-            String apiUrl = "http://api,openweathermap.org/data/2.5/forecast?lat=" + latitude + "&lon=" + longitude + "&appid=" + apiKey;
-
-            System.out.println("Forecast API URL: " + apiUrl);
+            String apiUrl = "https://api.openweathermap.org/data/2.5/forecast?q=London,uk&APPID=3eaab97ed540e25e7b261d686d5dfc42";
 
             URL url = new URL(apiUrl);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
 
             int responseCode = connection.getResponseCode();
-            System.out.println("Forecast API response code: " + responseCode);
             if (responseCode == 200) {
                 BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
                 StringBuilder response = new StringBuilder();
@@ -61,8 +54,6 @@ public class DataProcessor {
                     response.append(line);
                 }
                 reader.close();
-
-                System.out.println("Forecast API response: " + response.toString());
 
                 forecastData = gson.fromJson(response.toString(), JsonObject.class);
 
