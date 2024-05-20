@@ -45,11 +45,14 @@ public class DataProcessor {
 
             String apiUrl = "http://api,openweathermap.org/data/2.5/forecast?lat=" + latitude + "&lon=" + longitude + "&appid=" + apiKey;
 
+            System.out.println("Forecast API URL: " + apiUrl);
+
             URL url = new URL(apiUrl);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
 
             int responseCode = connection.getResponseCode();
+            System.out.println("Forecast API response code: " + responseCode);
             if (responseCode == 200) {
                 BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
                 StringBuilder response = new StringBuilder();
@@ -58,6 +61,8 @@ public class DataProcessor {
                     response.append(line);
                 }
                 reader.close();
+
+                System.out.println("Forecast API response: " + response.toString());
 
                 forecastData = gson.fromJson(response.toString(), JsonObject.class);
             } else {
