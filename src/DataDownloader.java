@@ -6,20 +6,23 @@ import java.net.URL;
 
 public class DataDownloader {
     public String downloadData(String apiUrl) throws IOException {
+        StringBuilder response = new StringBuilder();
         URL url = new URL(apiUrl);
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setRequestMethod("GET");
 
-        BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-        StringBuilder response = new StringBuilder();
-        String line;
+        int responseCode = connection.getResponseCode();
+        if (responseCode == 200) {
+            BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            String inputLine;
 
-        while ((line = reader.readLine()) != null) {
-            response.append(line);
+            while ((inputLine = in.readLine()) != null) {
+                response.append(inputLine);
+            }
+            in.close();
+        } else {
+            throw new IOException("Error response code: " + responseCode);
         }
-
-        reader.close();
-        connection.disconnect();
 
         return response.toString();
     }
