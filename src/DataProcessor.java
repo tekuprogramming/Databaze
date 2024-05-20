@@ -100,9 +100,9 @@ public class DataProcessor {
         }
     }
 
-    public void processForecastData(JsonObject jsonObject) {
+    public void processForecastData(JsonObject forecastData) {
         try {
-            JsonArray forecasts = jsonObject.getAsJsonArray("list");
+            JsonArray forecasts = forecastData.getAsJsonArray("list");
             if (forecasts == null) {
                 System.out.println("Forecasts data is missing 'list' field.");
                 return;
