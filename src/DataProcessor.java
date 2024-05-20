@@ -97,9 +97,11 @@ public class DataProcessor {
             System.out.println("Cloudiness: " + cloudiness + "%");
             System.out.println("Sunrise: " + sunrise);
             System.out.println("Sunset: " + sunset);
+            String weatherCategory = getWeatherCategory(temperature);
+            System.out.println("Weather category: " + weatherCategory);
             System.out.println("---------------------------------------");
 
-            saveDataToFile(city, country, latitude, longitude, temperature, humidity, windSpeed, cloudiness, sunrise, sunset);
+            saveDataToFile(city, country, latitude, longitude, temperature, humidity, windSpeed, cloudiness, sunrise, sunset, weatherCategory);
         } catch (Exception e) {
             System.out.println("Error processing current weather data: " + e.getMessage());
         }
@@ -123,12 +125,15 @@ public class DataProcessor {
 
                 String forecastDateTime = formatter.format(Instant.ofEpochSecond(forecastTimestamp));
 
+                String weatherCategory = getWeatherCategory(forecastTemperature);
+
                 System.out.println("Forecast data:");
                 System.out.println("Timestamp: " + forecastDateTime);
                 System.out.printf("Temperature: %.2f °C%n", forecastTemperature);
                 System.out.println("Humidity: " + forecastHumidity + "%");
                 System.out.println("Wind speed: " + forecastWindSpeed + " m/s");
                 System.out.println("Cloudiness: " + forecastCloudiness + "%");
+                System.out.println("Weather category: " + weatherCategory);
                 System.out.println("---------------------------------------");
             }
         } catch (Exception e) {
@@ -137,7 +142,7 @@ public class DataProcessor {
     }
 
     public void saveDataToFile(String city, String country, double latitude, double longitude, double temperature,
-                               double humidity, double windSpeed, int cloudiness, String sunrise, String sunset) throws IOException {
+                               double humidity, double windSpeed, int cloudiness, String sunrise, String sunset, String weatherCategory) throws IOException {
         try (FileWriter writer = new FileWriter("src//processed_data.txt")) {
             writer.write("City: " + city + "\n");
             writer.write("Country: " + country + "\n");
@@ -149,8 +154,7 @@ public class DataProcessor {
             writer.write("Cloudiness: " + cloudiness + "%\n");
             writer.write("Sunrise: " + sunrise + "\n");
             writer.write("Sunset: " + sunset + "\n");
-            String weatherCategory = getWeatherCategory(temperature);
-            System.out.println("Weather category: " + weatherCategory);
+            writer.write("Weather category: " + weatherCategory + "\n");
             System.out.println("Data saved to processed_data.txt");
         } catch (IOException e) {
             System.out.println("Error saving data to file: " + e.getMessage());
