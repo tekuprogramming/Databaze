@@ -65,6 +65,11 @@ public class DataProcessor {
                 System.out.println("Forecast API response: " + response.toString());
 
                 forecastData = gson.fromJson(response.toString(), JsonObject.class);
+
+                if (!forecastData.has("list")) {
+                    System.out.println("Forecast data is missing 'list field.'");
+                    return null;
+                }
             } else {
                 throw new IOException("Error response code: " + responseCode);
             }
