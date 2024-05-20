@@ -15,13 +15,18 @@ import java.util.Locale;
 
 public class DataProcessor {
     private String apiKey = "3eaab97ed540e25e7b261d686d5dfc42";
-    Gson gson = new Gson();
+    private Gson gson = new Gson();
+    private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
+            .withLocale(Locale.UK)
+            .withZone(ZoneId.systemDefault());
+
     public void processAndSaveData(String jsonData) throws IOException {
         JsonObject jsonObject = new JsonObject();
         try {
             jsonObject = gson.fromJson(jsonData, JsonObject.class);
         } catch (Exception e) {
             System.out.println("Error parsing JSON data: " + e.getMessage());
+            return;
         }
 
         processCurrentData(jsonObject);
@@ -55,11 +60,13 @@ public class DataProcessor {
             forecastData = gson.fromJson(response.toString(), JsonObject.class);
         } catch (Exception e) {
             System.out.println("Error getting forecast data: " + e.getMessage());
+            return null;
         }
         return forecastData;
     }
 
     public void processCurrentData(JsonObject jsonObject) throws IOException {
+        try {
             String city = jsonObject.get("name").getAsString();
             String country = jsonObject.getAsJsonObject("sys").get("country").getAsString();
             double latitude = jsonObject.getAsJsonObject("coord").get("lat").getAsDouble();
@@ -70,10 +77,6 @@ public class DataProcessor {
             int cloudiness = jsonObject.getAsJsonObject("clouds").get("all").getAsInt();
             long sunriseUnix = jsonObject.getAsJsonObject("sys").get("sunrise").getAsLong();
             long sunsetUnix = jsonObject.getAsJsonObject("sys").get("sunset").getAsLong();
-
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
-                    .withLocale(Locale.UK)
-                    .withZone(ZoneId.systemDefault());
 
             String sunrise = formatter.format(Instant.ofEpochSecond(sunriseUnix));
             String sunset = formatter.format(Instant.ofEpochSecond(sunsetUnix));
@@ -92,32 +95,39 @@ public class DataProcessor {
             System.out.println("---------------------------------------");
 
             saveDataToFile(city, country, latitude, longitude, temperature, humidity, windSpeed, cloudiness, sunrise, sunset);
+        } catch (Exception e) {
+            System.out.println("Error processing current weather data: " + e.getMessage());
+        }
     }
 
     public void processForecastData(JsonObject jsonObject) {
-        JsonArray forecasts = jsonObject.getAsJsonArray("list");
+        try {
+            JsonArray forecasts = jsonObject.getAsJsonArray("list");
+            if (forecasts == null) {
+                System.out.println("Forecasts data is missing 'list' field.");
+                return;
+            }
 
-        for (int i = 0; i < forecasts.size(); i++) {
-            JsonObject forecast = forecasts.get(i).getAsJsonObject();
-            long forecastTimestamp = forecast.get("dt").getAsLong();
-            double forecastTemperature = forecast.getAsJsonObject("main").get("temp").getAsDouble() - 273.15;
-            double forecastHumidity = forecast.getAsJsonObject("main").get("humidity").getAsDouble();
-            double forecastWindSpeed = forecast.getAsJsonObject("wind").get("speed").getAsDouble();
-            int forecastCloudiness = forecast.getAsJsonObject("clouds").get("all").getAsInt();
+            for (int i = 0; i < forecasts.size(); i++) {
+                JsonObject forecast = forecasts.get(i).getAsJsonObject();
+                long forecastTimestamp = forecast.get("dt").getAsLong();
+                double forecastTemperature = forecast.getAsJsonObject("main").get("temp").getAsDouble() - 273.15;
+                double forecastHumidity = forecast.getAsJsonObject("main").get("humidity").getAsDouble();
+                double forecastWindSpeed = forecast.getAsJsonObject("wind").get("speed").getAsDouble();
+                int forecastCloudiness = forecast.getAsJsonObject("clouds").get("all").getAsInt();
 
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
-                    .withLocale(Locale.UK)
-                    .withZone(ZoneId.systemDefault());
+                String forecastDateTime = formatter.format(Instant.ofEpochSecond(forecastTimestamp));
 
-            String forecastDateTime = formatter.format(Instant.ofEpochSecond(forecastTimestamp));
-
-            System.out.println("Forecast data:");
-            System.out.println("Timestamp: " + forecastDateTime);
-            System.out.printf("Temperature: %.2f °C%n", forecastTemperature);
-            System.out.println("Humidity: " + forecastHumidity+ "%");
-            System.out.println("Wind speed: " + forecastWindSpeed + " m/s");
-            System.out.println("Cloudiness: " + forecastCloudiness + "%");
-            System.out.println("---------------------------------------");
+                System.out.println("Forecast data:");
+                System.out.println("Timestamp: " + forecastDateTime);
+                System.out.printf("Temperature: %.2f °C%n", forecastTemperature);
+                System.out.println("Humidity: " + forecastHumidity + "%");
+                System.out.println("Wind speed: " + forecastWindSpeed + " m/s");
+                System.out.println("Cloudiness: " + forecastCloudiness + "%");
+                System.out.println("---------------------------------------");
+            }
+        } catch (Exception e) {
+            System.out.println("Error processing forecast data: " + e.getMessage());
         }
     }
 
