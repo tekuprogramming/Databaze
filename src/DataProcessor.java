@@ -2,22 +2,61 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
+import java.io.BufferedReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 
 public class DataProcessor {
+    private String apiKey = "3eaab97ed540e25e7b261d686d5dfc42";
+    Gson gson = new Gson();
     public void processAndSaveData(String jsonData) throws IOException {
-        Gson gson = new Gson();
-
-        JsonObject jsonObject = gson.fromJson(jsonData, JsonObject.class);
+        JsonObject jsonObject = new JsonObject();
+        try {
+            jsonObject = gson.fromJson(jsonData, JsonObject.class);
+        } catch (Exception e) {
+            System.out.println("Error parsing JSON data: " + e.getMessage());
+        }
 
         processCurrentData(jsonObject);
 
-        processForecastData(jsonObject);
+        JsonObject forecastData = getForecastData(jsonObject);
+        if (forecastData != null) {
+            processForecastData(forecastData);
+        }
+    }
+
+    public JsonObject getForecastData(JsonObject jsonObject) {
+        JsonObject forecastData = new JsonObject();
+        try {
+            double latitude = jsonObject.getAsJsonObject("coord").get("lat").getAsDouble();
+            double longitude = jsonObject.getAsJsonObject("coord").get("lon").getAsDouble();
+
+            String apiUrl = "http://api,openweathermap.org/data/2.5/forecast?lat=" + latitude + "&lon=" + longitude + "&appid=" + apiKey;
+
+            URL url = new URL(apiUrl);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("GET");
+
+            BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            StringBuilder response = new StringBuilder();
+            String line;
+            while ((line = reader.readLine()) != null) {
+                response.append(line);
+            }
+            reader.close();
+
+            forecastData = gson.fromJson(response.toString(), JsonObject.class);
+        } catch (Exception e) {
+            System.out.println("Error getting forecast data: " + e.getMessage());
+        }
+        return forecastData;
     }
 
     public void processCurrentData(JsonObject jsonObject) throws IOException {
