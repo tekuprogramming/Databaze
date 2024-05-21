@@ -137,6 +137,8 @@ public class DataProcessor {
                 System.out.println("Weather category: " + weatherCategory);
                 System.out.println("---------------------------------------");
             }
+
+            saveForecastDataToFile(forecasts);
         } catch (Exception e) {
             System.out.println("Error processing forecast data: " + e.getMessage());
         }
@@ -156,9 +158,39 @@ public class DataProcessor {
             writer.write("Sunrise: " + sunrise + "\n");
             writer.write("Sunset: " + sunset + "\n");
             writer.write("Weather category: " + weatherCategory + "\n");
+            writer.write("---------------------------------------\n");
             System.out.println("Data saved to processed_data.txt");
         } catch (IOException e) {
             System.out.println("Error saving data to file: " + e.getMessage());
+        }
+    }
+
+    public void saveForecastDataToFile(JsonArray forecasts) {
+        try (FileWriter writer = new FileWriter("src//processed_forecastdata.txt")) {
+            for (int i = 0; i < forecasts.size(); i++) {
+                JsonObject forecast = forecasts.get(i).getAsJsonObject();
+                long forecastTimestamp = forecast.get("dt").getAsLong();
+                double forecastTemperature = forecast.getAsJsonObject("main").get("temp").getAsDouble() - 273.15;
+                double forecastHumidity = forecast.getAsJsonObject("main").get("humidity").getAsDouble();
+                double forecastWindSpeed = forecast.getAsJsonObject("wind").get("speed").getAsDouble();
+                int forecastCloudiness = forecast.getAsJsonObject("clouds").get("all").getAsInt();
+
+                String forecastDateTime = formatter.format(Instant.ofEpochSecond(forecastTimestamp));
+
+                String weatherCategory = getWeatherCategory(forecastTemperature);
+
+                writer.write("Forecast data:\n");
+                writer.write("Timestamp: " + forecastDateTime + "\n");
+                writer.write(String.format("Temperature: %.2f °C%n", forecastTemperature));
+                writer.write("Humidity: " + forecastHumidity + "%\n");
+                writer.write("Wind speed: " + forecastWindSpeed + " m/s\n");
+                writer.write("Cloudiness: " + forecastCloudiness + "%\n");
+                writer.write("Weather category: " + weatherCategory + "\n");
+                writer.write("---------------------------------------\n");
+            }
+            System.out.println("Forecast data saved to processed_forecastdata.txt");
+        } catch (IOException e) {
+            System.out.println("Error saving forecast data to file: " + e.getMessage());
         }
     }
 
