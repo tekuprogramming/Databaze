@@ -43,7 +43,7 @@ public class UserInteraction {
                 String forecastWeatherData = downloader.downloadData(forecastWeatherUrl);
 
                 processor.processAndSaveData(currentWeatherData);
-                processor.processAndSaveData(forecastWeatherData);
+                processor.processAndSaveForecastData(forecastWeatherData);
             }
         } catch (IOException e) {
             System.out.println("An error occurred while downloading data: " + e.getMessage());
