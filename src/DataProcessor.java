@@ -14,6 +14,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 
 public class DataProcessor {
+    private String apiKey = "3eaab97ed540e25e7b261d686d5dfc42";
     private Gson gson = new Gson();
     private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
             .withLocale(Locale.UK)
@@ -173,5 +174,9 @@ public class DataProcessor {
         } else {
             return "Hot";
         }
+    }
+
+    public String getApiKey() {
+        return apiKey;
     }
 }
