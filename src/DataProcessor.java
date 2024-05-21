@@ -2,10 +2,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
-import java.io.BufferedReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.time.Instant;
@@ -30,45 +27,18 @@ public class DataProcessor {
         }
 
         processCurrentData(jsonObject);
-
-        JsonObject forecastData = getForecastData(jsonObject);
-        if (forecastData != null) {
-            processForecastData(forecastData);
-        }
     }
 
-    public JsonObject getForecastData(JsonObject jsonObject) {
-        JsonObject forecastData = new JsonObject();
+    public void processAndSaveForecastData(String jsonData) {
+        JsonObject forecastData;
         try {
-            String apiUrl = "https://api.openweathermap.org/data/2.5/forecast?q=London,uk&APPID=3eaab97ed540e25e7b261d686d5dfc42";
-
-            URL url = new URL(apiUrl);
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setRequestMethod("GET");
-
-            int responseCode = connection.getResponseCode();
-            if (responseCode == 200) {
-                BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-                StringBuilder response = new StringBuilder();
-                String line;
-                while ((line = reader.readLine()) != null) {
-                    response.append(line);
-                }
-                reader.close();
-
-                forecastData = gson.fromJson(response.toString(), JsonObject.class);
-
-                if (!forecastData.has("list")) {
-                    System.out.println("Forecast data is missing 'list field.'");
-                    return null;
-                }
-            } else {
-                throw new IOException("Error response code: " + responseCode);
-            }
+            forecastData = gson.fromJson(jsonData, JsonObject.class);
         } catch (Exception e) {
-            System.out.println("Error getting forecast data: " + e.getMessage());
+            System.out.println("Error parsing forecast JSON data: " + e.getMessage());
+            return;
         }
-        return forecastData;
+
+        processForecastData(forecastData);
     }
 
     public void processCurrentData(JsonObject jsonObject) throws IOException {
