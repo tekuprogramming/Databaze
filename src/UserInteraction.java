@@ -36,21 +36,26 @@ public class UserInteraction {
         String countryName = countries[choice - 1];
 
         try {
-            String currentWeatherUrl = buildWeatherUrl(cityName, countryName, processor.getApiKey());
-            if (currentWeatherUrl != null) {
+            String currentWeatherUrl = buildWeatherUrl(cityName, countryName, processor.getApiKey(), false);
+            String forecastWeatherUrl = buildWeatherUrl(cityName, countryName, processor.getApiKey(), true);
+            if (currentWeatherUrl != null && forecastWeatherUrl != null) {
                 String currentWeatherData = downloader.downloadData(currentWeatherUrl);
+                String forecastWeatherData = downloader.downloadData(forecastWeatherUrl);
+
                 processor.processAndSaveData(currentWeatherData);
+                processor.processAndSaveData(forecastWeatherData);
             }
         } catch (IOException e) {
             System.out.println("An error occurred while downloading data: " + e.getMessage());
         }
     }
 
-    public String buildWeatherUrl(String cityName, String countryName, String apiKey) {
+    public String buildWeatherUrl(String cityName, String countryName, String apiKey, boolean isForecast) {
         try {
             String encodedCityName = URLEncoder.encode(cityName, "UTF-8");
             String encodedCountryName = URLEncoder.encode(countryName, "UTF-8");
-            return "https://api.openweathermap.org/data/2.5/weather?q=" + encodedCityName + "," + encodedCountryName + "&appid=" + apiKey;
+            String endpoint = isForecast ? "forecast" : "weather";
+            return "https://api.openweathermap.org/data/2.5/" + endpoint + "?q=" + encodedCityName + "," + encodedCountryName + "&appid=" + apiKey;
         } catch (Exception e) {
             System.out.println("Error building weather URL: " + e.getMessage());
             return null;
