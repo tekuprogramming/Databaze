@@ -13,7 +13,7 @@ public class UserInteraction {
         String[] cities = {"London", "Prague", "Tokyo", "New York", "Rio de Janeiro"};
         String[] countries = {"uk", "cz", "jp", "us", "br"};
 
-        System.out.println("Select a city to get weather data (" + cities + "): ");
+        System.out.println("Select a city to get weather data: ");
         for (int i = 0; i < cities.length; i++) {
             System.out.println((i + 1) + ". " + cities[i]);
         }
