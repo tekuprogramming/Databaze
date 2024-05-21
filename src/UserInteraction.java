@@ -1,26 +1,35 @@
 import javax.print.DocFlavor;
 import java.io.IOException;
 import java.net.URLEncoder;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class UserInteraction {
-    private DataProcessor processor;
-    private DataDownloader downloader;
+    private DataProcessor processor = new DataProcessor();
+    private DataDownloader downloader = new DataDownloader();
 
     public void start() {
         Scanner scanner = new Scanner(System.in);
         String[] cities = {"London", "Prague", "Tokyo", "New York", "Rio de Janeiro"};
         String[] countries = {"uk", "cz", "jp", "us", "br"};
 
-        System.out.println("Select a city to get weather data:");
+        System.out.println("Select a city to get weather data (" + cities + "): ");
         for (int i = 0; i < cities.length; i++) {
             System.out.println((i + 1) + ". " + cities[i]);
         }
 
-        int choice = scanner.nextInt();
-        if (choice < 1 || choice > cities.length) {
-            System.out.println("Invalid choice.");
-            return;
+        int choice = -1;
+        while (choice < 1 || choice > cities.length) {
+            try {
+                System.out.println("Enter your choice (1-" + cities.length + "): ");
+                choice = scanner.nextInt();
+                if (choice < 1 || choice > cities.length) {
+                    System.out.println("Invalid choice. Please select a valid city number.");
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("Invalid input. Please enter a number.");
+                scanner.next();
+            }
         }
 
         String cityName = cities[choice - 1];
