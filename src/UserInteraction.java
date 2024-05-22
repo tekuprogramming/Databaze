@@ -87,7 +87,7 @@ public class UserInteraction {
             case "Prague":
                 return "Europe/Prague";
             case "Tokyo":
-                return "Asis/Tokyo";
+                return "Asia/Tokyo";
             case "New York":
                 return "America/New_York";
             case "Rio de Janeiro":
