@@ -54,6 +54,8 @@ public class UserInteraction {
             }
         }
 
+        scanner.close();
+
         try {
             if (dataTypeChoice == 1) {
                 String currentWeatherUrl = buildWeatherUrl(cityName, countryName, processor.getApiKey(), false);
