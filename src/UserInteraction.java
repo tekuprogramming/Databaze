@@ -68,6 +68,7 @@ public class UserInteraction {
                 processor.processAndSaveForecastData(forecastWeatherData);
             } else if (dataTypeChoice == 3) {
                 displayCurrentTime(cityName);
+                processor.saveCurrentTimeToFile(cityName);
             }
         } catch (IOException e) {
             System.out.println("An error occurred while downloading data: " + e.getMessage());
