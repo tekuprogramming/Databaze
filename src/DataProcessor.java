@@ -164,14 +164,12 @@ public class DataProcessor {
     }
 
     public void saveCurrentTimeToFile(String cityName) {
-        LocalDateTime currentTime = LocalDateTime.now();
-
-        String formattedTime = currentTime.format(formatter);
-
         String fileName = "src//current_time.txt";
 
         try (PrintWriter writer = new PrintWriter(new FileWriter(fileName))) {
-            writer.println("Current time in " + cityName + ": " + formattedTime);
+            ZoneId zoneId = ZoneId.of(getTimeZone(cityName));
+            LocalDateTime currentTime = LocalDateTime.now(zoneId);
+            writer.println("Current time in " + cityName + ": " + currentTime);
             System.out.println("Current time in " + cityName + " has been saved to current_time.txt");
         } catch (IOException e) {
             System.out.println("Error saving current time to file: " + e.getMessage());
@@ -194,5 +192,22 @@ public class DataProcessor {
 
     public String getApiKey() {
         return apiKey;
+    }
+
+    public String getTimeZone(String city) {
+        switch (city) {
+            case "London":
+                return "Europe/London";
+            case "Prague":
+                return "Europe/Prague";
+            case "Tokyo":
+                return "Asia/Tokyo";
+            case "New York":
+                return "America/New_York";
+            case "Rio de Janeiro":
+                return "America/Sao_Paulo";
+            default:
+                return "GMT";
+        }
     }
 }
