@@ -3,8 +3,6 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
 import java.io.*;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
@@ -161,6 +159,16 @@ public class DataProcessor {
             System.out.println("Forecast data saved to processed_forecastdata.txt");
         } catch (IOException e) {
             System.out.println("Error saving forecast data to file: " + e.getMessage());
+        }
+    }
+
+    public void saveCurrentTimeToFile(String cityName) {
+        String fileName = "src//current_time.txt";
+
+        try (PrintWriter writer = new PrintWriter(new FileWriter(fileName))) {
+            writer.println("Current time in " + cityName + " has been saved to " + fileName);
+        } catch (IOException e) {
+            System.out.println("Error saving current time to file: " + e.getMessage());
         }
     }
 
