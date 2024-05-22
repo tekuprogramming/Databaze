@@ -172,7 +172,7 @@ public class DataProcessor {
 
         try (PrintWriter writer = new PrintWriter(new FileWriter(fileName))) {
             writer.println("Current time in " + cityName + ": " + formattedTime);
-            System.out.println("Current time in " + cityName + " has been saved to " + fileName);
+            System.out.println("Current time in " + cityName + " has been saved to current_time.txt");
         } catch (IOException e) {
             System.out.println("Error saving current time to file: " + e.getMessage());
         }
