@@ -4,6 +4,7 @@ import com.google.gson.JsonObject;
 
 import java.io.*;
 import java.time.Instant;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
@@ -163,10 +164,15 @@ public class DataProcessor {
     }
 
     public void saveCurrentTimeToFile(String cityName) {
+        LocalDateTime currentTime = LocalDateTime.now();
+
+        String formattedTime = currentTime.format(formatter);
+
         String fileName = "src//current_time.txt";
 
         try (PrintWriter writer = new PrintWriter(new FileWriter(fileName))) {
-            writer.println("Current time in " + cityName + " has been saved to " + fileName);
+            writer.println("Current time in " + cityName + ": " + formattedTime);
+            System.out.println("Current time in " + cityName + " has been saved to " + fileName);
         } catch (IOException e) {
             System.out.println("Error saving current time to file: " + e.getMessage());
         }
