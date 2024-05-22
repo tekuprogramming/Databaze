@@ -1,12 +1,13 @@
 import java.io.IOException;
 import java.net.URLEncoder;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class UserInteraction {
     private DataProcessor processor = new DataProcessor();
     private DataDownloader downloader = new DataDownloader();
-    private TrafficDataProcessor trafficProcessor = new TrafficDataProcessor();
 
     public void start() {
         Scanner scanner = new Scanner(System.in);
@@ -38,7 +39,7 @@ public class UserInteraction {
         System.out.println("Select data type:");
         System.out.println("1. Current weather");
         System.out.println("2. Weather forecast");
-        System.out.println("3. Traffic information");
+        System.out.println("3. Current time");
 
         int dataTypeChoice = -1;
         while (dataTypeChoice < 1 || dataTypeChoice > 3) {
@@ -66,10 +67,33 @@ public class UserInteraction {
                 String forecastWeatherData = downloader.downloadData(forecastWeatherUrl);
                 processor.processAndSaveForecastData(forecastWeatherData);
             } else if (dataTypeChoice == 3) {
-                trafficProcessor.getTrafficInfo(cityName);
+                displayCurrentTime(cityName);
             }
         } catch (IOException e) {
             System.out.println("An error occurred while downloading data: " + e.getMessage());
+        }
+    }
+
+    public void displayCurrentTime(String city) {
+        ZoneId zoneId = ZoneId.of(getTimeZone(city));
+        LocalDateTime currentTime = LocalDateTime.now(zoneId);
+        System.out.println("Current time in " + city + ": " + currentTime);
+    }
+
+    public String getTimeZone(String city) {
+        switch (city) {
+            case "London":
+                return "Europe/London";
+            case "Prague":
+                return "Europe/Prague";
+            case "Tokyo":
+                return "Asis/Tokyo";
+            case "New York":
+                return "America/New_York";
+            case "Rio de Janeiro":
+                return "America/Sao_Paulo";
+            default:
+                return "GMT";
         }
     }
 
