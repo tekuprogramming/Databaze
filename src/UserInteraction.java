@@ -1,4 +1,3 @@
-import javax.print.DocFlavor;
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.util.InputMismatchException;
@@ -7,6 +6,7 @@ import java.util.Scanner;
 public class UserInteraction {
     private DataProcessor processor = new DataProcessor();
     private DataDownloader downloader = new DataDownloader();
+    private TrafficDataProcessor trafficProcessor = new TrafficDataProcessor();
 
     public void start() {
         Scanner scanner = new Scanner(System.in);
@@ -35,15 +35,36 @@ public class UserInteraction {
         String cityName = cities[choice - 1];
         String countryName = countries[choice - 1];
 
-        try {
-            String currentWeatherUrl = buildWeatherUrl(cityName, countryName, processor.getApiKey(), false);
-            String forecastWeatherUrl = buildWeatherUrl(cityName, countryName, processor.getApiKey(), true);
-            if (currentWeatherUrl != null && forecastWeatherUrl != null) {
-                String currentWeatherData = downloader.downloadData(currentWeatherUrl);
-                String forecastWeatherData = downloader.downloadData(forecastWeatherUrl);
+        System.out.println("Select data type:");
+        System.out.println("1. Current weather");
+        System.out.println("2. Weather forecast");
+        System.out.println("3. Traffic information");
 
+        int dataTypeChoice = -1;
+        while (dataTypeChoice < 1 || dataTypeChoice > 3) {
+            try {
+                System.out.println("Enter your choice (1-3): ");
+                dataTypeChoice = scanner.nextInt();
+                if (dataTypeChoice < 1 || dataTypeChoice > 3) {
+                    System.out.println("Invalid choice. Please select a valid data type number.");
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("Invalid input. Please enter a number.");
+                scanner.next();
+            }
+        }
+
+        try {
+            if (dataTypeChoice == 1) {
+                String currentWeatherUrl = buildWeatherUrl(cityName, countryName, processor.getApiKey(), false);
+                String currentWeatherData = downloader.downloadData(currentWeatherUrl);
                 processor.processAndSaveData(currentWeatherData);
+            } else if (dataTypeChoice == 2) {
+                String forecastWeatherUrl = buildWeatherUrl(cityName, countryName, processor.getApiKey(), true);
+                String forecastWeatherData = downloader.downloadData(forecastWeatherUrl);
                 processor.processAndSaveForecastData(forecastWeatherData);
+            } else if (dataTypeChoice == 3) {
+                trafficProcessor.getTrafficInfo(cityName);
             }
         } catch (IOException e) {
             System.out.println("An error occurred while downloading data: " + e.getMessage());
