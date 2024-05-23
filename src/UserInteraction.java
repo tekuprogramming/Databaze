@@ -18,6 +18,7 @@ public class UserInteraction {
     private DataProcessor processor = new DataProcessor();
     private DataDownloader downloader = new DataDownloader();
     private CurrencyConverter converter = new CurrencyConverter();
+    private PopulationFetcher fetcher = new PopulationFetcher();
     private static final String foursquareApiKey = "fsq3EcKnfEJJe4FpQ8vfNVAjUuAORfaOfOmabnmrR7iU6pE=";
     private static final String foursquareBaseUrl = "https://api.foursquare.com/v3/places/search";
 
@@ -54,13 +55,14 @@ public class UserInteraction {
         System.out.println("3. Current time");
         System.out.println("4. Currency converter");
         System.out.println("5. Tourist attractions");
+        System.out.println("6. Population");
 
         int dataTypeChoice = -1;
-        while (dataTypeChoice < 1 || dataTypeChoice > 5) {
+        while (dataTypeChoice < 1 || dataTypeChoice > 6) {
             try {
-                System.out.println("Enter your choice (1-5): ");
+                System.out.println("Enter your choice (1-6): ");
                 dataTypeChoice = scanner.nextInt();
-                if (dataTypeChoice < 1 || dataTypeChoice > 5) {
+                if (dataTypeChoice < 1 || dataTypeChoice > 6) {
                     System.out.println("Invalid choice. Please select a valid data type number.");
                 }
             } catch (InputMismatchException e) {
@@ -77,17 +79,19 @@ public class UserInteraction {
                     String currentWeatherUrl = buildWeatherUrl(cityName, countryName, processor.getApiKey(), false);
                     String currentWeatherData = downloader.downloadData(currentWeatherUrl);
                     processor.processAndSaveData(currentWeatherData);
-                    case 2:
-                        String forecastWeatherUrl = buildWeatherUrl(cityName, countryName, processor.getApiKey(), true);
-                        String forecastWeatherData = downloader.downloadData(forecastWeatherUrl);
-                        processor.processAndSaveForecastData(forecastWeatherData);
-                        case 3:
-                            displayCurrentTime(cityName);
-                            processor.saveCurrentTimeToFile(cityName);
+                case 2:
+                    String forecastWeatherUrl = buildWeatherUrl(cityName, countryName, processor.getApiKey(), true);
+                    String forecastWeatherData = downloader.downloadData(forecastWeatherUrl);
+                    processor.processAndSaveForecastData(forecastWeatherData);
+                case 3:
+                    displayCurrentTime(cityName);
+                    processor.saveCurrentTimeToFile(cityName);
                 case 4:
-                  converter.convertForCity(cityName);
+                    converter.convertForCity(cityName);
                 case 5:
                     displayTouristAttractions(cityName);
+                case 6:
+                    fetcher.printPopulation(cityName);
             }
         } catch (IOException e) {
             System.out.println("An error occurred while downloading data: " + e.getMessage());
