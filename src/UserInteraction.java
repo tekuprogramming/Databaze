@@ -19,6 +19,7 @@ public class UserInteraction {
     private DataDownloader downloader = new DataDownloader();
     private CurrencyConverter converter = new CurrencyConverter();
     private PopulationFetcher fetcher = new PopulationFetcher();
+    private YelpApiFetcher apiFetcher = new YelpApiFetcher();
     private static final String foursquareApiKey = "fsq3EcKnfEJJe4FpQ8vfNVAjUuAORfaOfOmabnmrR7iU6pE=";
     private static final String foursquareBaseUrl = "https://api.foursquare.com/v3/places/search";
 
@@ -56,13 +57,14 @@ public class UserInteraction {
         System.out.println("4. Currency converter");
         System.out.println("5. Tourist attractions");
         System.out.println("6. Population");
+        System.out.println("7. Top restaurants");
 
         int dataTypeChoice = -1;
-        while (dataTypeChoice < 1 || dataTypeChoice > 6) {
+        while (dataTypeChoice < 1 || dataTypeChoice > 7) {
             try {
-                System.out.println("Enter your choice (1-6): ");
+                System.out.println("Enter your choice (1-7): ");
                 dataTypeChoice = scanner.nextInt();
-                if (dataTypeChoice < 1 || dataTypeChoice > 6) {
+                if (dataTypeChoice < 1 || dataTypeChoice > 7) {
                     System.out.println("Invalid choice. Please select a valid data type number.");
                 }
             } catch (InputMismatchException e) {
@@ -92,6 +94,8 @@ public class UserInteraction {
                     displayTouristAttractions(cityName);
                 case 6:
                     fetcher.printPopulation(cityName);
+                case 7:
+                    apiFetcher.printTopRestaurants(cityName);
             }
         } catch (IOException e) {
             System.out.println("An error occurred while downloading data: " + e.getMessage());
