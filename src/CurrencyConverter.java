@@ -36,12 +36,12 @@ public class CurrencyConverter {
                 return "GBP";
             case "Prague":
                 return "CZK";
-            case "Tokyo":
-                return "JPY";
+            case "Barcelona":
+                return "EUR";
             case "New York":
                 return "USD";
-            case "Rio de Janeiro":
-                return "BRL";
+            case "Ottawa":
+                return "CAD";
             default:
                 return null;
         }
