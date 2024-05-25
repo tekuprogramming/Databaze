@@ -19,8 +19,9 @@ public class UserInteraction {
     private DataDownloader downloader = new DataDownloader();
     private CurrencyConverter converter = new CurrencyConverter();
     private PopulationFetcher fetcher = new PopulationFetcher();
-    private YelpApiFetcher apiFetcher = new YelpApiFetcher();
+    private RestaurantFetcher restaurantFetcher = new RestaurantFetcher();
     private EventFetcher eventFetcher = new EventFetcher();
+    private ShopFetcher shopFetcher = new ShopFetcher();
     private static final String foursquareApiKey = "fsq3EcKnfEJJe4FpQ8vfNVAjUuAORfaOfOmabnmrR7iU6pE=";
     private static final String foursquareBaseUrl = "https://api.foursquare.com/v3/places/search";
 
@@ -60,13 +61,14 @@ public class UserInteraction {
         System.out.println("6. Population");
         System.out.println("7. Top restaurants");
         System.out.println("8. Events");
+        System.out.println("9. Shopping areas");
 
         int dataTypeChoice = -1;
-        while (dataTypeChoice < 1 || dataTypeChoice > 8) {
+        while (dataTypeChoice < 1 || dataTypeChoice > 9) {
             try {
-                System.out.println("Enter your choice (1-8): ");
+                System.out.println("Enter your choice (1-9): ");
                 dataTypeChoice = scanner.nextInt();
-                if (dataTypeChoice < 1 || dataTypeChoice > 8) {
+                if (dataTypeChoice < 1 || dataTypeChoice > 9) {
                     System.out.println("Invalid choice. Please select a valid data type number.");
                 }
             } catch (InputMismatchException e) {
@@ -103,10 +105,13 @@ public class UserInteraction {
                     fetcher.printPopulation(cityName);
                     break;
                 case 7:
-                    apiFetcher.printTopRestaurants(cityName);
+                    restaurantFetcher.printTopRestaurants(cityName);
                     break;
                 case 8:
                     eventFetcher.searchEvents(cityName);
+                    break;
+                case 9:
+                    shopFetcher.searchShops(cityName);
                     break;
             }
         } catch (IOException e) {
