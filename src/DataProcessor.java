@@ -200,12 +200,12 @@ public class DataProcessor {
                 return "Europe/London";
             case "Prague":
                 return "Europe/Prague";
-            case "Tokyo":
-                return "Asia/Tokyo";
+            case "Barcelona":
+                return "Europe/Madrid";
             case "New York":
                 return "America/New_York";
-            case "Rio de Janeiro":
-                return "America/Sao_Paulo";
+            case "Ottawa":
+                return "America/Toronto";
             default:
                 return "GMT";
         }
