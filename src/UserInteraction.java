@@ -20,13 +20,14 @@ public class UserInteraction {
     private CurrencyConverter converter = new CurrencyConverter();
     private PopulationFetcher fetcher = new PopulationFetcher();
     private YelpApiFetcher apiFetcher = new YelpApiFetcher();
+    private EventFetcher eventFetcher = new EventFetcher();
     private static final String foursquareApiKey = "fsq3EcKnfEJJe4FpQ8vfNVAjUuAORfaOfOmabnmrR7iU6pE=";
     private static final String foursquareBaseUrl = "https://api.foursquare.com/v3/places/search";
 
     public void start() {
         Scanner scanner = new Scanner(System.in);
-        String[] cities = {"London", "Prague", "Tokyo", "New York", "Rio de Janeiro"};
-        String[] countries = {"uk", "cz", "jp", "us", "br"};
+        String[] cities = {"London", "Prague", "Barcelona", "New York", "Ottawa"};
+        String[] countries = {"uk", "cz", "es", "us", "ca"};
 
         System.out.println("Select a city to get weather data: ");
         for (int i = 0; i < cities.length; i++) {
@@ -58,13 +59,14 @@ public class UserInteraction {
         System.out.println("5. Tourist attractions");
         System.out.println("6. Population");
         System.out.println("7. Top restaurants");
+        System.out.println("8. Events");
 
         int dataTypeChoice = -1;
-        while (dataTypeChoice < 1 || dataTypeChoice > 7) {
+        while (dataTypeChoice < 1 || dataTypeChoice > 8) {
             try {
-                System.out.println("Enter your choice (1-7): ");
+                System.out.println("Enter your choice (1-8): ");
                 dataTypeChoice = scanner.nextInt();
-                if (dataTypeChoice < 1 || dataTypeChoice > 7) {
+                if (dataTypeChoice < 1 || dataTypeChoice > 8) {
                     System.out.println("Invalid choice. Please select a valid data type number.");
                 }
             } catch (InputMismatchException e) {
@@ -81,21 +83,31 @@ public class UserInteraction {
                     String currentWeatherUrl = buildWeatherUrl(cityName, countryName, processor.getApiKey(), false);
                     String currentWeatherData = downloader.downloadData(currentWeatherUrl);
                     processor.processAndSaveData(currentWeatherData);
+                    break;
                 case 2:
                     String forecastWeatherUrl = buildWeatherUrl(cityName, countryName, processor.getApiKey(), true);
                     String forecastWeatherData = downloader.downloadData(forecastWeatherUrl);
                     processor.processAndSaveForecastData(forecastWeatherData);
+                    break;
                 case 3:
                     displayCurrentTime(cityName);
                     processor.saveCurrentTimeToFile(cityName);
+                    break;
                 case 4:
                     converter.convertForCity(cityName);
+                    break;
                 case 5:
                     displayTouristAttractions(cityName);
+                    break;
                 case 6:
                     fetcher.printPopulation(cityName);
+                    break;
                 case 7:
                     apiFetcher.printTopRestaurants(cityName);
+                    break;
+                case 8:
+                    eventFetcher.searchEvents(cityName);
+                    break;
             }
         } catch (IOException e) {
             System.out.println("An error occurred while downloading data: " + e.getMessage());
@@ -114,12 +126,12 @@ public class UserInteraction {
                 return "Europe/London";
             case "Prague":
                 return "Europe/Prague";
-            case "Tokyo":
-                return "Asia/Tokyo";
+            case "Barcelona":
+                return "Europe/Madrid";
             case "New York":
                 return "America/New_York";
-            case "Rio de Janeiro":
-                return "America/Sao_Paulo";
+            case "Ottawa":
+                return "America/Toronto";
             default:
                 return "GMT";
         }
