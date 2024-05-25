@@ -8,7 +8,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 
-public class YelpApiFetcher {
+public class RestaurantFetcher {
     private static final String apiKey = "tTQefmw6eLhOCz1bX8cFmeVKAuoyONVHz28lz4Gn7EOq4dbOWVC5RR9847RuiKJe7FiNG5yXtepTrkd6ABpqY5bR88Efur6tfh4eqhbWGz0TgTVS2go3GZAZdY1QZnYx";
     private static final String baseUrl = "https://api.yelp.com/v3/businesses/search";
 
@@ -46,4 +46,3 @@ public class YelpApiFetcher {
         }
     }
 }
-
