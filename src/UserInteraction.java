@@ -22,6 +22,7 @@ public class UserInteraction {
     private RestaurantFetcher restaurantFetcher = new RestaurantFetcher();
     private EventFetcher eventFetcher = new EventFetcher();
     private ShopFetcher shopFetcher = new ShopFetcher();
+    private KidsEventFetcher kidsEventFetcher = new KidsEventFetcher();
     private static final String foursquareApiKey = "fsq3EcKnfEJJe4FpQ8vfNVAjUuAORfaOfOmabnmrR7iU6pE=";
     private static final String foursquareBaseUrl = "https://api.foursquare.com/v3/places/search";
 
@@ -62,13 +63,14 @@ public class UserInteraction {
         System.out.println("7. Top restaurants");
         System.out.println("8. Events");
         System.out.println("9. Shopping areas");
+        System.out.println("10. Kids events");
 
         int dataTypeChoice = -1;
-        while (dataTypeChoice < 1 || dataTypeChoice > 9) {
+        while (dataTypeChoice < 1 || dataTypeChoice > 10) {
             try {
-                System.out.println("Enter your choice (1-9): ");
+                System.out.println("Enter your choice (1-10): ");
                 dataTypeChoice = scanner.nextInt();
-                if (dataTypeChoice < 1 || dataTypeChoice > 9) {
+                if (dataTypeChoice < 1 || dataTypeChoice > 10) {
                     System.out.println("Invalid choice. Please select a valid data type number.");
                 }
             } catch (InputMismatchException e) {
@@ -112,6 +114,9 @@ public class UserInteraction {
                     break;
                 case 9:
                     shopFetcher.searchShops(cityName);
+                    break;
+                case 10:
+                    kidsEventFetcher.searchKidsEvents(cityName);
                     break;
             }
         } catch (IOException e) {
