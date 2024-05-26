@@ -41,7 +41,7 @@ public class ShopFetcher {
                 System.out.println(shopName);
             }
         } catch (Exception e) {
-            System.out.println("Error occurred while fetching restaurant data for " + cityName);
+            System.out.println("Error occurred while fetching shop data for " + cityName);
         }
     }
 }
