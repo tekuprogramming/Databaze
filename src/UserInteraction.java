@@ -7,16 +7,17 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class UserInteraction {
-    private DataProcessor processor = new DataProcessor();
-    private DataDownloader downloader = new DataDownloader();
-    private CurrencyConverter converter = new CurrencyConverter();
-    private PopulationFetcher fetcher = new PopulationFetcher();
-    private RestaurantFetcher restaurantFetcher = new RestaurantFetcher();
-    private EventFetcher eventFetcher = new EventFetcher();
-    private ShopFetcher shopFetcher = new ShopFetcher();
-    private KidsEventFetcher kidsEventFetcher = new KidsEventFetcher();
-    private AirQualityFetcher qualityFetcher = new AirQualityFetcher();
-    private TouristAttractionFetcher attractionFetcher = new TouristAttractionFetcher();
+    private final DataProcessor processor = new DataProcessor();
+    private final DataDownloader downloader = new DataDownloader();
+    private final CurrencyConverter converter = new CurrencyConverter();
+    private final PopulationFetcher fetcher = new PopulationFetcher();
+    private final RestaurantFetcher restaurantFetcher = new RestaurantFetcher();
+    private final EventFetcher eventFetcher = new EventFetcher();
+    private final ShopFetcher shopFetcher = new ShopFetcher();
+    private final KidsEventFetcher kidsEventFetcher = new KidsEventFetcher();
+    private final AirQualityFetcher qualityFetcher = new AirQualityFetcher();
+    private final TouristAttractionFetcher attractionFetcher = new TouristAttractionFetcher();
+    private final HotelFetcher hotelFetcher = new HotelFetcher();
 
     public void start() {
         Scanner scanner = new Scanner(System.in);
@@ -57,13 +58,14 @@ public class UserInteraction {
         System.out.println("9. Shopping areas");
         System.out.println("10. Kids events");
         System.out.println("11. Air quality");
+        System.out.println("12. Top hotels");
 
         int dataTypeChoice = -1;
-        while (dataTypeChoice < 1 || dataTypeChoice > 11) {
+        while (dataTypeChoice < 1 || dataTypeChoice > 12) {
             try {
-                System.out.println("Enter your choice (1-11): ");
+                System.out.println("Enter your choice (1-12): ");
                 dataTypeChoice = scanner.nextInt();
-                if (dataTypeChoice < 1 || dataTypeChoice > 11) {
+                if (dataTypeChoice < 1 || dataTypeChoice > 12) {
                     System.out.println("Invalid choice. Please select a valid data type number.");
                 }
             } catch (InputMismatchException e) {
@@ -113,6 +115,9 @@ public class UserInteraction {
                     break;
                 case 11:
                     qualityFetcher.getAirQuality(cityName);
+                    break;
+                case 12:
+                    hotelFetcher.searchHotels(cityName);
                     break;
             }
         } catch (IOException e) {
