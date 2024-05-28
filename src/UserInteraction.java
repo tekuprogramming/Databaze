@@ -18,6 +18,7 @@ public class UserInteraction {
     private final AirQualityFetcher qualityFetcher = new AirQualityFetcher();
     private final TouristAttractionFetcher attractionFetcher = new TouristAttractionFetcher();
     private final HotelFetcher hotelFetcher = new HotelFetcher();
+    private final MuseumFetcher museumFetcher = new MuseumFetcher();
 
     public void start() {
         Scanner scanner = new Scanner(System.in);
@@ -59,13 +60,14 @@ public class UserInteraction {
         System.out.println("10. Kids events");
         System.out.println("11. Air quality");
         System.out.println("12. Top hotels");
+        System.out.println("13. Top museums");
 
         int dataTypeChoice = -1;
-        while (dataTypeChoice < 1 || dataTypeChoice > 12) {
+        while (dataTypeChoice < 1 || dataTypeChoice > 13) {
             try {
-                System.out.println("Enter your choice (1-12): ");
+                System.out.println("Enter your choice (1-13): ");
                 dataTypeChoice = scanner.nextInt();
-                if (dataTypeChoice < 1 || dataTypeChoice > 12) {
+                if (dataTypeChoice < 1 || dataTypeChoice > 13) {
                     System.out.println("Invalid choice. Please select a valid data type number.");
                 }
             } catch (InputMismatchException e) {
@@ -118,6 +120,9 @@ public class UserInteraction {
                     break;
                 case 12:
                     hotelFetcher.searchHotels(cityName);
+                    break;
+                case 13:
+                    museumFetcher.searchMuseums(cityName);
                     break;
             }
         } catch (IOException e) {
