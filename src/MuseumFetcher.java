@@ -43,7 +43,7 @@ public class MuseumFetcher {
                 System.out.println(museumName + " - Rating: " + rating + " - Address: " + address);
             }
         } catch (Exception e) {
-            System.out.println("Error occurred while fetching hotel data for " + cityName);
+            System.out.println("Error occurred while fetching museum data for " + cityName);
         }
     }
 }
