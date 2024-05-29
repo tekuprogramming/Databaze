@@ -8,10 +8,17 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 
+/**
+ * Class for air quality data.
+ */
 public class AirQualityFetcher {
 
     DataProcessor processor = new DataProcessor();
 
+    /**
+     * Fetches air quality data using Open Weather Map API.
+     * @param cityName Name of the city you want to fetch air quality data for.
+     */
     public void getAirQuality(String cityName) {
         try {
             String encodedCityName = URLEncoder.encode(cityName, "UTF-8");

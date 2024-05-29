@@ -10,9 +10,17 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 
+/**
+ * Class for tourist attractions.
+ */
 public class TouristAttractionFetcher {
     private static final String apiKey = "fsq3EcKnfEJJe4FpQ8vfNVAjUuAORfaOfOmabnmrR7iU6pE=";
     private static final String baseUrl = "https://api.foursquare.com/v3/places/search";
+
+    /**
+     * Fetches tourist attractions using Foursquare API.
+     * @param city City you want the tourist attractions for.
+     */
     public void displayTouristAttractions(String city) {
         try {
             String encodedCity = URLEncoder.encode(city, StandardCharsets.UTF_8.toString());

@@ -11,10 +11,17 @@ import java.net.URLEncoder;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * Class for events.
+ */
 public class EventFetcher {
 
     private static final String apiKey = "zeV40MUyFKm0wL7JEcowYME1ybsDutZr";
 
+    /**
+     * Fetches events using Ticket Master API.
+     * @param cityName Name of the city you want events for.
+     */
     public void searchEvents(String cityName) {
         try {
             String encodedCityName = URLEncoder.encode(cityName, "UTF-8");

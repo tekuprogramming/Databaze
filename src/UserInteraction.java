@@ -6,6 +6,9 @@ import java.time.ZoneId;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
+/**
+ * Class for user interaction.
+ */
 public class UserInteraction {
     private final DataProcessor processor = new DataProcessor();
     private final DataDownloader downloader = new DataDownloader();
@@ -21,6 +24,9 @@ public class UserInteraction {
     private final MuseumFetcher museumFetcher = new MuseumFetcher();
     private final ParkFetcher parkFetcher = new ParkFetcher();
 
+    /**
+     * Starts the program.
+     */
     public void start() {
         Scanner scanner = new Scanner(System.in);
         String[] cities = {"London", "Prague", "Barcelona", "New York", "Ottawa"};
@@ -135,12 +141,21 @@ public class UserInteraction {
         }
     }
 
+    /**
+     * Displays current time.
+     * @param city City you want the current time for.
+     */
     public void displayCurrentTime(String city) {
         ZoneId zoneId = ZoneId.of(getTimeZone(city));
         LocalDateTime currentTime = LocalDateTime.now(zoneId);
         System.out.println("Current time in " + city + ": " + currentTime);
     }
 
+    /**
+     * Determines the time zone.
+     * @param city City you want the time zone of.
+     * @return Returns the time zone, in default case returns GMT.
+     */
     public String getTimeZone(String city) {
         switch (city) {
             case "London":
@@ -158,6 +173,14 @@ public class UserInteraction {
         }
     }
 
+    /**
+     * Builds the API URL for current weather and weather forecast.
+     * @param cityName Name of the city you want the API URL for.
+     * @param countryName Name of the country you want the API URL for.
+     * @param apiKey API key,
+     * @param isForecast If true, the API URL is for weather forecast, if false, the API URL is for current weather.
+     * @return
+     */
     public String buildWeatherUrl(String cityName, String countryName, String apiKey, boolean isForecast) {
         try {
             String encodedCityName = URLEncoder.encode(cityName, "UTF-8");

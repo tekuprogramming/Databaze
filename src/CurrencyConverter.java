@@ -7,10 +7,17 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+/**
+ * Class for converting one currency to another.
+ */
 public class CurrencyConverter {
     private static final String apiKey = "3746f3c9ba0247ac8c1e13bed7589f7a";
     private static final String baseUrl = "https://openexchangerates.org/api/latest.json";
 
+    /**
+     * Converts a chosen city's currency to USD.
+     * @param city City, the currency of which you want to convert.
+     */
     public void convertForCity(String city) {
         try {
             String currencyCode = getCurrencyCodeForCity(city);
@@ -30,6 +37,11 @@ public class CurrencyConverter {
         }
     }
 
+    /**
+     * Gets the abbreviation of the city's currency.
+     * @param city City, the currency of which you want an abbreviation of.
+     * @return Returns null in the default case.
+     */
     public String getCurrencyCodeForCity(String city) {
         switch (city) {
             case "London":
@@ -47,6 +59,12 @@ public class CurrencyConverter {
         }
     }
 
+    /**
+     * Gets the conversion rate for the conversion.
+     * @param targetCurrency The currency you want to convert.
+     * @return If the rates have targetCurrency, it returns targetCurrency as double, if not, it returns -1.
+     * @throws IOException
+     */
     public double getConversionRate(String targetCurrency) throws IOException {
         URL url = new URL(baseUrl + "?app_id=" + apiKey);
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();

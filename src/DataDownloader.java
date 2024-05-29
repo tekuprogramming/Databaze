@@ -4,7 +4,16 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+/**
+ * Class for downloading data.
+ */
 public class DataDownloader {
+    /**
+     * Downloads data using API.
+     * @param apiUrl API URL.
+     * @return Returns response as String.
+     * @throws IOException
+     */
     public String downloadData(String apiUrl) throws IOException {
         URL url = new URL(apiUrl);
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();

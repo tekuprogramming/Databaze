@@ -9,10 +9,17 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 
+/**
+ * Class for parks.
+ */
 public class ParkFetcher {
     private static final String apiKey = "tTQefmw6eLhOCz1bX8cFmeVKAuoyONVHz28lz4Gn7EOq4dbOWVC5RR9847RuiKJe7FiNG5yXtepTrkd6ABpqY5bR88Efur6tfh4eqhbWGz0TgTVS2go3GZAZdY1QZnYx";
     private static final String baseUrl = "https://api.yelp.com/v3/businesses/search";
 
+    /**
+     * Fetches parks using Yelp API.
+     * @param cityName Name of the city you want parks for.
+     */
     public void searchParks(String cityName) {
         try {
             String encodedCityName = URLEncoder.encode(cityName, "UTF-8");

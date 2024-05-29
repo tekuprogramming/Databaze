@@ -11,9 +11,16 @@ import java.net.URLEncoder;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * Class for kids events.
+ */
 public class KidsEventFetcher {
     private static final String apiKey = "zeV40MUyFKm0wL7JEcowYME1ybsDutZr";
 
+    /**
+     * Fetches kids events using Ticket Master API.
+     * @param cityName Name of the city you want kids events for.
+     */
     public void searchKidsEvents(String cityName) {
         try {
             String encodedCityName = URLEncoder.encode(cityName, "UTF-8");

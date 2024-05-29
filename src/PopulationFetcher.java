@@ -8,7 +8,15 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 
+/**
+ * Class for population.
+ */
 public class PopulationFetcher {
+    /**
+     * Fetches the number of the population.
+     * @param cityName Name of the city you want the population of.
+     * @return If geoNamesArray > 0, returns population, if not, returns -1.
+     */
     public int getPopulation(String cityName) {
         try {
             String encodedCityName = URLEncoder.encode(cityName, "UTF-8");
@@ -43,6 +51,10 @@ public class PopulationFetcher {
         }
     }
 
+    /**
+     * Prints population.
+     * @param cityName Name of the city you wanna print the population for.
+     */
     public void printPopulation(String cityName) {
         int population = getPopulation(cityName);
         if (population != 1) {

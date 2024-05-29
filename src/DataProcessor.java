@@ -9,6 +9,9 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 
+/**
+ * Class for processing data.
+ */
 public class DataProcessor {
     private static final String apiKey = "3eaab97ed540e25e7b261d686d5dfc42";
     private Gson gson = new Gson();
@@ -16,6 +19,11 @@ public class DataProcessor {
             .withLocale(Locale.UK)
             .withZone(ZoneId.systemDefault());
 
+    /**
+     * Processes and saves data.
+     * @param jsonData JSON data you want to work with.
+     * @throws IOException
+     */
     public void processAndSaveData(String jsonData) throws IOException {
         JsonObject jsonObject = new JsonObject();
         try {
@@ -28,6 +36,10 @@ public class DataProcessor {
         processCurrentData(jsonObject);
     }
 
+    /**
+     * Processes and saves forecast data.
+     * @param jsonData JSON data you want to work with.
+     */
     public void processAndSaveForecastData(String jsonData) {
         JsonObject forecastData;
         try {
@@ -40,6 +52,11 @@ public class DataProcessor {
         processForecastData(forecastData);
     }
 
+    /**
+     * Processes and saves current weather data.
+     * @param jsonObject JSON data you want to work with.
+     * @throws IOException
+     */
     public void processCurrentData(JsonObject jsonObject) throws IOException {
         try {
             String city = jsonObject.get("name").getAsString();
@@ -77,6 +94,10 @@ public class DataProcessor {
         }
     }
 
+    /**
+     * Processes forecast data.
+     * @param forecastData Forecast data you want to work with.
+     */
     public void processForecastData(JsonObject forecastData) {
         try {
             JsonArray forecasts = forecastData.getAsJsonArray("list");
@@ -113,6 +134,21 @@ public class DataProcessor {
         }
     }
 
+    /**
+     * Saves current weather data to .txt file.
+     * @param city City.
+     * @param country Country.
+     * @param latitude Latitude.
+     * @param longitude Longitude.
+     * @param temperature Temperature (Celsius).
+     * @param humidity Humidity (%).
+     * @param windSpeed Wind speed (m/s).
+     * @param cloudiness Cloudiness (%).
+     * @param sunrise Sunrise time (yy:mm:dd hh:mm:ss).
+     * @param sunset Sunset time (yy:mm:dd hh:mm:ss).
+     * @param weatherCategory Weather category (freezing, cold, cool, warm, or hot).
+     * @throws IOException
+     */
     public void saveDataToFile(String city, String country, double latitude, double longitude, double temperature,
                                double humidity, double windSpeed, int cloudiness, String sunrise, String sunset, String weatherCategory) throws IOException {
         try (FileWriter writer = new FileWriter("src//processed_data.txt")) {
@@ -134,6 +170,10 @@ public class DataProcessor {
         }
     }
 
+    /**
+     * Saves forecast data to .txt file.
+     * @param forecasts Array of JSON forecasts.
+     */
     public void saveForecastDataToFile(JsonArray forecasts) {
         try (FileWriter writer = new FileWriter("src//processed_forecastdata.txt")) {
             for (int i = 0; i < forecasts.size(); i++) {
@@ -163,6 +203,10 @@ public class DataProcessor {
         }
     }
 
+    /**
+     * Saves current time to file.
+     * @param cityName City, the current time of which you want to save.
+     */
     public void saveCurrentTimeToFile(String cityName) {
         String fileName = "src//current_time.txt";
 
@@ -176,6 +220,11 @@ public class DataProcessor {
         }
     }
 
+    /**
+     * Determines the weather category.
+     * @param temperature Temperature.
+     * @return Returns the weather category.
+     */
     public String getWeatherCategory(double temperature) {
         if (temperature < 0) {
             return "Freezing";
@@ -194,6 +243,11 @@ public class DataProcessor {
         return apiKey;
     }
 
+    /**
+     * Determines the time zone of the city.
+     * @param city City you want the time zone of.
+     * @return Returns the time zone, in default case returns GMT.
+     */
     public String getTimeZone(String city) {
         switch (city) {
             case "London":
