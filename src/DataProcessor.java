@@ -72,7 +72,7 @@ public class DataProcessor {
             System.out.println("---------------------------------------");
 
             saveDataToFile(city, country, latitude, longitude, temperature, humidity, windSpeed, cloudiness, sunrise, sunset, weatherCategory);
-        } catch (Exception e) {
+        } catch (IOException e) {
             System.out.println("Error processing current weather data: " + e.getMessage());
         }
     }
