@@ -20,7 +20,7 @@ public class DataProcessor {
             .withZone(ZoneId.systemDefault());
 
     /**
-     * Processes and saves data.
+     * Processes and saves current weather data.
      * @param jsonData JSON data you want to work with.
      * @throws IOException
      */
