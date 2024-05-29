@@ -19,7 +19,7 @@ public class CurrencyConverterTest {
             double rate = converter.getConversionRate(targetCurrency);
             assertEquals(expectedRate, rate, 0.001);
         } catch (IOException e) {
-            fail("IOException should not occur.");
+            fail("IOException should not occur: " + e.getMessage());
         }
     }
 }
