@@ -19,7 +19,7 @@ public class EventFetcher {
     private static final String apiKey = "zeV40MUyFKm0wL7JEcowYME1ybsDutZr";
 
     /**
-     * Fetches events using Ticket Master API.
+     * Fetches events using Ticketmaster API.
      * @param cityName Name of the city you want events for.
      */
     public void searchEvents(String cityName) {
