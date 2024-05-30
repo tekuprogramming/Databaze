@@ -2,7 +2,7 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
-public class UserInteractionTester {
+public class UserInteractionTest {
 
     @Test
     public void testBuildWeatherUrl_CurrentWeather() {
