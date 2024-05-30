@@ -13,7 +13,7 @@ import java.net.URLEncoder;
  */
 public class PopulationFetcher {
     /**
-     * Fetches the number of the population.
+     * Fetches the number of the population using Geonames API.
      * @param cityName Name of the city you want the population of.
      * @return If geoNamesArray > 0, returns population, if not, returns -1.
      */
@@ -53,7 +53,7 @@ public class PopulationFetcher {
 
     /**
      * Prints population.
-     * @param cityName Name of the city you wanna print the population for.
+     * @param cityName Name of the city you want to print the population for.
      */
     public void printPopulation(String cityName) {
         int population = getPopulation(cityName);
