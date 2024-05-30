@@ -18,7 +18,7 @@ public class KidsEventFetcher {
     private static final String apiKey = "zeV40MUyFKm0wL7JEcowYME1ybsDutZr";
 
     /**
-     * Fetches kids events using Ticket Master API.
+     * Fetches kids events using Ticketmaster API.
      * @param cityName Name of the city you want kids events for.
      */
     public void searchKidsEvents(String cityName) {
