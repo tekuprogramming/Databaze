@@ -60,7 +60,7 @@ public class CurrencyConverter {
     }
 
     /**
-     * Gets the conversion rate for the conversion.
+     * Gets the conversion rate for the conversion using Open Exchange Rates API.
      * @param targetCurrency The currency you want to convert.
      * @return If the rates have targetCurrency, it returns targetCurrency as double, if not, it returns -1.
      * @throws IOException
