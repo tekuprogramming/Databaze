@@ -1,0 +1,320 @@
+Forecast data:
+Timestamp: 2024-05-31 23:00:00
+Temperature: 13,10 °C
+Humidity: 80.0%
+Wind speed: 5.0 m/s
+Cloudiness: 100%
+Weather category: Cool
+---------------------------------------
+Forecast data:
+Timestamp: 2024-06-01 02:00:00
+Temperature: 12,13 °C
+Humidity: 82.0%
+Wind speed: 4.06 m/s
+Cloudiness: 78%
+Weather category: Cool
+---------------------------------------
+Forecast data:
+Timestamp: 2024-06-01 05:00:00
+Temperature: 10,29 °C
+Humidity: 86.0%
+Wind speed: 3.92 m/s
+Cloudiness: 41%
+Weather category: Cool
+---------------------------------------
+Forecast data:
+Timestamp: 2024-06-01 08:00:00
+Temperature: 9,95 °C
+Humidity: 79.0%
+Wind speed: 4.56 m/s
+Cloudiness: 4%
+Weather category: Cold
+---------------------------------------
+Forecast data:
+Timestamp: 2024-06-01 11:00:00
+Temperature: 14,36 °C
+Humidity: 62.0%
+Wind speed: 5.47 m/s
+Cloudiness: 6%
+Weather category: Cool
+---------------------------------------
+Forecast data:
+Timestamp: 2024-06-01 14:00:00
+Temperature: 18,54 °C
+Humidity: 50.0%
+Wind speed: 6.27 m/s
+Cloudiness: 9%
+Weather category: Cool
+---------------------------------------
+Forecast data:
+Timestamp: 2024-06-01 17:00:00
+Temperature: 17,88 °C
+Humidity: 57.0%
+Wind speed: 6.0 m/s
+Cloudiness: 23%
+Weather category: Cool
+---------------------------------------
+Forecast data:
+Timestamp: 2024-06-01 20:00:00
+Temperature: 16,23 °C
+Humidity: 64.0%
+Wind speed: 5.15 m/s
+Cloudiness: 38%
+Weather category: Cool
+---------------------------------------
+Forecast data:
+Timestamp: 2024-06-01 23:00:00
+Temperature: 12,74 °C
+Humidity: 78.0%
+Wind speed: 3.82 m/s
+Cloudiness: 10%
+Weather category: Cool
+---------------------------------------
+Forecast data:
+Timestamp: 2024-06-02 02:00:00
+Temperature: 11,00 °C
+Humidity: 80.0%
+Wind speed: 3.54 m/s
+Cloudiness: 17%
+Weather category: Cool
+---------------------------------------
+Forecast data:
+Timestamp: 2024-06-02 05:00:00
+Temperature: 9,85 °C
+Humidity: 80.0%
+Wind speed: 3.31 m/s
+Cloudiness: 13%
+Weather category: Cold
+---------------------------------------
+Forecast data:
+Timestamp: 2024-06-02 08:00:00
+Temperature: 10,85 °C
+Humidity: 66.0%
+Wind speed: 3.95 m/s
+Cloudiness: 9%
+Weather category: Cool
+---------------------------------------
+Forecast data:
+Timestamp: 2024-06-02 11:00:00
+Temperature: 16,42 °C
+Humidity: 49.0%
+Wind speed: 3.46 m/s
+Cloudiness: 29%
+Weather category: Cool
+---------------------------------------
+Forecast data:
+Timestamp: 2024-06-02 14:00:00
+Temperature: 20,07 °C
+Humidity: 49.0%
+Wind speed: 3.5 m/s
+Cloudiness: 25%
+Weather category: Warm
+---------------------------------------
+Forecast data:
+Timestamp: 2024-06-02 17:00:00
+Temperature: 20,84 °C
+Humidity: 53.0%
+Wind speed: 4.78 m/s
+Cloudiness: 100%
+Weather category: Warm
+---------------------------------------
+Forecast data:
+Timestamp: 2024-06-02 20:00:00
+Temperature: 18,60 °C
+Humidity: 50.0%
+Wind speed: 3.57 m/s
+Cloudiness: 100%
+Weather category: Cool
+---------------------------------------
+Forecast data:
+Timestamp: 2024-06-02 23:00:00
+Temperature: 15,56 °C
+Humidity: 75.0%
+Wind speed: 2.64 m/s
+Cloudiness: 100%
+Weather category: Cool
+---------------------------------------
+Forecast data:
+Timestamp: 2024-06-03 02:00:00
+Temperature: 13,88 °C
+Humidity: 86.0%
+Wind speed: 2.24 m/s
+Cloudiness: 100%
+Weather category: Cool
+---------------------------------------
+Forecast data:
+Timestamp: 2024-06-03 05:00:00
+Temperature: 12,28 °C
+Humidity: 90.0%
+Wind speed: 2.16 m/s
+Cloudiness: 99%
+Weather category: Cool
+---------------------------------------
+Forecast data:
+Timestamp: 2024-06-03 08:00:00
+Temperature: 13,52 °C
+Humidity: 82.0%
+Wind speed: 3.24 m/s
+Cloudiness: 97%
+Weather category: Cool
+---------------------------------------
+Forecast data:
+Timestamp: 2024-06-03 11:00:00
+Temperature: 17,00 °C
+Humidity: 71.0%
+Wind speed: 4.17 m/s
+Cloudiness: 100%
+Weather category: Cool
+---------------------------------------
+Forecast data:
+Timestamp: 2024-06-03 14:00:00
+Temperature: 18,19 °C
+Humidity: 64.0%
+Wind speed: 3.7 m/s
+Cloudiness: 100%
+Weather category: Cool
+---------------------------------------
+Forecast data:
+Timestamp: 2024-06-03 17:00:00
+Temperature: 18,91 °C
+Humidity: 61.0%
+Wind speed: 3.5 m/s
+Cloudiness: 100%
+Weather category: Cool
+---------------------------------------
+Forecast data:
+Timestamp: 2024-06-03 20:00:00
+Temperature: 17,45 °C
+Humidity: 77.0%
+Wind speed: 1.8 m/s
+Cloudiness: 100%
+Weather category: Cool
+---------------------------------------
+Forecast data:
+Timestamp: 2024-06-03 23:00:00
+Temperature: 15,81 °C
+Humidity: 91.0%
+Wind speed: 1.22 m/s
+Cloudiness: 99%
+Weather category: Cool
+---------------------------------------
+Forecast data:
+Timestamp: 2024-06-04 02:00:00
+Temperature: 14,79 °C
+Humidity: 92.0%
+Wind speed: 1.22 m/s
+Cloudiness: 99%
+Weather category: Cool
+---------------------------------------
+Forecast data:
+Timestamp: 2024-06-04 05:00:00
+Temperature: 12,93 °C
+Humidity: 95.0%
+Wind speed: 1.6 m/s
+Cloudiness: 92%
+Weather category: Cool
+---------------------------------------
+Forecast data:
+Timestamp: 2024-06-04 08:00:00
+Temperature: 13,38 °C
+Humidity: 96.0%
+Wind speed: 2.08 m/s
+Cloudiness: 95%
+Weather category: Cool
+---------------------------------------
+Forecast data:
+Timestamp: 2024-06-04 11:00:00
+Temperature: 14,12 °C
+Humidity: 91.0%
+Wind speed: 2.66 m/s
+Cloudiness: 100%
+Weather category: Cool
+---------------------------------------
+Forecast data:
+Timestamp: 2024-06-04 14:00:00
+Temperature: 17,46 °C
+Humidity: 72.0%
+Wind speed: 3.3 m/s
+Cloudiness: 98%
+Weather category: Cool
+---------------------------------------
+Forecast data:
+Timestamp: 2024-06-04 17:00:00
+Temperature: 19,15 °C
+Humidity: 62.0%
+Wind speed: 4.57 m/s
+Cloudiness: 88%
+Weather category: Cool
+---------------------------------------
+Forecast data:
+Timestamp: 2024-06-04 20:00:00
+Temperature: 18,25 °C
+Humidity: 62.0%
+Wind speed: 3.79 m/s
+Cloudiness: 71%
+Weather category: Cool
+---------------------------------------
+Forecast data:
+Timestamp: 2024-06-04 23:00:00
+Temperature: 15,56 °C
+Humidity: 83.0%
+Wind speed: 3.62 m/s
+Cloudiness: 82%
+Weather category: Cool
+---------------------------------------
+Forecast data:
+Timestamp: 2024-06-05 02:00:00
+Temperature: 13,13 °C
+Humidity: 84.0%
+Wind speed: 3.38 m/s
+Cloudiness: 88%
+Weather category: Cool
+---------------------------------------
+Forecast data:
+Timestamp: 2024-06-05 05:00:00
+Temperature: 11,63 °C
+Humidity: 88.0%
+Wind speed: 3.52 m/s
+Cloudiness: 100%
+Weather category: Cool
+---------------------------------------
+Forecast data:
+Timestamp: 2024-06-05 08:00:00
+Temperature: 13,04 °C
+Humidity: 82.0%
+Wind speed: 4.36 m/s
+Cloudiness: 90%
+Weather category: Cool
+---------------------------------------
+Forecast data:
+Timestamp: 2024-06-05 11:00:00
+Temperature: 15,42 °C
+Humidity: 59.0%
+Wind speed: 3.95 m/s
+Cloudiness: 55%
+Weather category: Cool
+---------------------------------------
+Forecast data:
+Timestamp: 2024-06-05 14:00:00
+Temperature: 17,86 °C
+Humidity: 41.0%
+Wind speed: 3.99 m/s
+Cloudiness: 40%
+Weather category: Cool
+---------------------------------------
+Forecast data:
+Timestamp: 2024-06-05 17:00:00
+Temperature: 18,89 °C
+Humidity: 39.0%
+Wind speed: 4.11 m/s
+Cloudiness: 5%
+Weather category: Cool
+---------------------------------------
+Forecast data:
+Timestamp: 2024-06-05 20:00:00
+Temperature: 17,44 °C
+Humidity: 45.0%
+Wind speed: 3.52 m/s
+Cloudiness: 4%
+Weather category: Cool
+---------------------------------------
