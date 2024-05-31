@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="ffd67247-cc04-4a09-aa50-a29fd9f62afb" name="Changes" comment="added files">
+      <change afterPath="$PROJECT_DIR$/DOKUMENTACE.pdf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Projekt_Polyanskova.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/_zaverecnyProjekt2/META-INF/MANIFEST.MF" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/META-INF/MANIFEST.MF" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/current_time.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/processed_forecastdata.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/_zaverecnyProjekt2.iml" beforeDir="false" afterPath="$PROJECT_DIR$/_zaverecnyProjekt2.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/_zaverecnyProjekt2/DataDownloader.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/_zaverecnyProjekt2/DataDownloader.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/_zaverecnyProjekt2/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/_zaverecnyProjekt2/Main.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/DataDownloader.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DataDownloader.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectId" id="2hFQWJVyaDYwvfTgAYIyOGi5XiG" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true"
+  }
+}]]></component>
+  <component name="RunManager">
+    <configuration name="Projekt_Polyanskova.jar" type="JarApplication" temporary="true">
+      <option name="JAR_PATH" value="$PROJECT_DIR$/Projekt_Polyanskova.jar" />
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="JAR Application.Projekt_Polyanskova.jar" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="ffd67247-cc04-4a09-aa50-a29fd9f62afb" name="Changes" comment="" />
+      <created>1717187379471</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1717187379471</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="added files" />
+    <option name="LAST_COMMIT_MESSAGE" value="added files" />
+  </component>
+</project>
