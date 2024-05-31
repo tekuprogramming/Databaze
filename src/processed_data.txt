@@ -1,0 +1,12 @@
+City: London
+Country: GB
+Latitude: 51.5085
+Longitude: -0.1257
+Temperature: 13.620000000000005°C
+Humidity: 85.0%
+Wind speed: 6.69 m/s
+Cloudiness: 100%
+Sunrise: 2024-05-31 05:49:41
+Sunset: 2024-05-31 22:07:08
+Weather category: Cool
+---------------------------------------
